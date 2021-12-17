@@ -1,0 +1,12 @@
+
+html{
+    height : 100%;
+}
+
+body{
+    height : 100%;
+    display : flex;
+    flex-direction : column ;  /* 수직 정렬 */
+    align-items: center;    /* 수직 가운데 정렬 */
+
+}

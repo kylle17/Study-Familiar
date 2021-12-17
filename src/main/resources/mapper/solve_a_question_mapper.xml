@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.solve_a_question.Solve_a_QuestionMapper">
+
+
+
+
+    <select id="selectLevel1" resultType="HashMap">
+        select distinct(level1)
+          from study_record
+         where record = 'n'
+         order by level1
+    </select>
+
+
+
+    <select id="selectLevel2" parameterType="String" resultType="HashMap">
+        select distinct(level2)
+          from study_record
+         where record = 'n'
+           and level1 = #{level1}
+         order by level2
+    </select>
+
+
+
+    <select id="selectCategorize_group" parameterType="String" resultType="HashMap">
+        select A.categorize_group
+          from study_record A
+          left outer join common B
+            on B.categorize = 'categorize_group'
+           and B.subject = A.categorize_group
+         where A.record = 'n'
+           and level1 = #{level1}
+           and level2 = #{level2}
+
+         group by A.categorize_group
+         order by B.order_num
+    </select>
+
+
+
+
+    <select id="selectKnowledges" parameterType="String" resultType="HashMap">
+        select categorize , question , answer
+          from Knowledge
+         where level1 = #{level1}
+           and level2 = #{level2}
+           and categorize_group = #{categorize_group}
+         order by order_num
+    </select>
+
+
+
+    <delete id="mismatch_study_menu_remove" >
+        delete from study_record
+        where id in ( 	   select *
+                             from (
+                                      select B.id
+                                        from (
+                                                select level1 , level2 , categorize_group
+                                                from Knowledge
+                                                group by level1 , level2 , categorize_group
+                                              ) A
+                                        right join study_record B
+                                           on A.level1 = B.level1
+                                          and A.level2 = B.level2
+                                          and A.categorize_group = B.categorize_group
+                                        where A.level1 is null
+                                  ) temp
+        )
+    </delete>
+
+
+
+    <insert id="copy_study_menu">
+        insert into study_record ( id , level1 , level2 , categorize_group  )
+        select fn_get_seq('study_record') , A.level1 , A.level2 , A.categorize_group
+          from (
+                    select level1 , level2 , categorize_group
+                    from Knowledge
+                    group by level1 , level2 , categorize_group
+               ) A
+          left join study_record B
+            on A.level1 = B.level1
+           and A.level2 = B.level2
+           and A.categorize_group = B.categorize_group
+         where B.level1 is null
+    </insert>
+
+
+    <update id="record_reset" >
+        update study_record
+           set record = 'n'
+    </update>
+
+
+    <update id="pass_record" parameterType="String" >
+        update study_record
+           set record = 'y'
+         where level1 = #{level1}
+           and level2 = #{level2}
+           and categorize_group = #{categorize_group}
+    </update>
+
+
+
+
+<!--    <delete id="deleteKnowledge" parameterType="study.knowledge_manage.KnowledgeDTO">-->
+<!--        delete-->
+<!--    </delete>-->
+
+
+</mapper>

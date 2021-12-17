@@ -1,0 +1,10 @@
+
+footer {
+    height: 60px;
+    width: 100% ;
+    padding: 20px 20px 20px 20px;
+
+    display : flex;
+    justify-content: center;  /* 수평 가운데 정렬 */
+
+}

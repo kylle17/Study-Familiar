@@ -1,0 +1,41 @@
+
+
+header{
+    max-height: 300px;
+    width: 80% ;
+    padding: 20px 20px 20px 20px;
+
+    display : flex;
+    justify-content: center;  /* 수평 가운데 정렬 */
+}
+
+header div{
+     font-size : 20px;
+     min-width : 150px;
+     text-align : center;
+     color : blue;
+     text-decoration: underline;
+     cursor : pointer;
+}
+
+
+
+/*모바일에 적용할  CSS*/
+@media (max-width: 767px){
+
+    header{
+        display : flex;
+        justify-content: center;  /* 수평 가운데 정렬 */
+    }
+
+    header div{
+         font-size : 15px;
+         min-width : 105px;
+         text-align : center;
+         color : blue;
+         text-decoration: underline;
+         cursor : pointer;
+         margin : 1px 0px 1px 0px;
+    }
+
+}

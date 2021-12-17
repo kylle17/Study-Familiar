@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <head th:replace="lib_import_tag/head_jqwidgets_lib :: jqwidgets_lib"></head>
+    <head th:replace="lib_import_tag/head_layout :: head_layout"></head>
+    <script src="/js_common/ajax.js"></script>
+    <script src="/js_common/module_jqxgrid.js"></script>
+    <script src="/js_common/module_tag.js"></script>
+    <script src="/01. knowledge_manage/knowledge_manage.js"></script>
+    <script src="/01. knowledge_manage/jqxgrid_level1.js"></script>
+    <script src="/01. knowledge_manage/jqxgrid_level2.js"></script>
+    <script src="/01. knowledge_manage/jqxgrid_categorize_group.js"></script>
+    <script src="/01. knowledge_manage/jqxgrid_knowledge.js"></script>
+    <link rel="stylesheet" href="/01. knowledge_manage/knowledge_manage.css" type="text/css"/>
+
+</head>
+<body>
+
+    <header th:replace="layout/header :: header"></header>
+
+    <content>
+
+        <div id="left">
+            <div id="grid_area_top">
+                <div id="jqxgrid_level1"></div>
+                <div id="jqxgrid_level2"></div>
+                <div id="jqxgrid_categorize_group"></div>
+            </div>
+            <div id="grid_button_area">
+                <input type="button" value="행 삽입" id="add_row"></input>
+                <input type="button" value="▲" id="row_up"></input>
+                <input type="button" value="▼" id="row_down"></input>
+                <input type="button" value="그리드저장" id="grid_insert_bnt"></input>
+            </div>
+            <div id="grid_area_bottom">
+                <div id="jqxgrid_knowledge"></div>
+            </div>
+        </div>
+
+        <div id="right">
+            <div id="detail">
+                <div>
+                    <div>ID :</div>
+                    <input type="text" id="id"/>
+                </div>
+                <div>
+                    <div>대분류 :</div>
+                    <input type="text" id="level1"/>
+                </div>
+               <div>
+                    <div>중분류 :</div>
+                    <input type="text" id="level2"/>
+                </div>
+               <div>
+                    <div>정렬 :</div>
+                    <input type="text" id="order_num"/>
+                </div>
+                <div>
+                    <div>그룹 :</div>
+                    <select id="categorize_group"></select>
+                </div>
+                <div>
+                    <div>문제유형 :</div>
+                    <select id="categorize"></select>
+                </div>
+                <div>
+                    <div>문제 :</div>
+                    <textarea id="question"></textarea>
+                </div>
+                <div>
+                    <div>정답 :</div>
+                    <textarea id="answer"></textarea>
+                </div>
+            </div>
+            <div id="button_area">
+                <input type="button" value="초기화" id="detail_reset_bnt"></input>
+                <input type="button" value="저장" id="detail_insert_bnt"></input>
+                <input type="button" value="삭제" id="detail_delete_bnt"></input>
+            </div>
+        </div>
+
+    </content>
+
+    <footer th:replace="layout/footer :: footer"></footer>
+
+
+
+</body>
+</html>

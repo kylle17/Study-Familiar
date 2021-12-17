@@ -1,0 +1,93 @@
+
+content {
+    width : 95%;
+    height: 1100px;
+}
+
+
+content #left{
+    padding: 20px 20px 20px 20px;
+    width:100%;
+    border : 0.1px solid gray ;
+}
+
+
+content #left #grid_button_area{
+    display : flex;
+    justify-content: right;  /* 수평 가운데 정렬 */
+
+    padding: 0px 0px 20px 0px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+}
+
+
+content #left #grid_button_area input {
+    margin: 0px 0px 0px 20px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+}
+
+
+
+#grid_area_top , #grid_area_bottom {
+    display : flex;
+    justify-content: left;  /* 수평 가운데 정렬 */
+
+    height : 350px;
+    margin : 0px 0px 5px 0px;
+}
+
+
+content #right{
+    padding: 20px 20px 20px 20px;
+    width:100%;
+    border : 0.1px solid gray ;
+}
+
+
+#button_area {
+    padding : 0px 0px 10px 400px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+}
+
+
+#button_area input {
+    margin : 0px 0px 0px 20px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+}
+
+
+#right #detail > div {
+    display : flex;
+    justify-content: left;  /* 수평 가운데 정렬 */
+
+    margin: 0px 10px 20px 10px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+    text-align : right;
+}
+
+
+#right #detail > div > div {
+    width : 100px;
+    margin: 0px 20px 0px 0px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+}
+
+
+#right #detail > div > input {
+    height : 20px;
+    width : 500px;
+}
+
+#right #detail > div > select {
+    height : 30px;
+    width : 250px;
+    font-size : 15px;
+}
+
+
+#right #detail > div > textarea {
+    width : 800px;
+    font-size : 15px;
+}
+
+#right #detail > div > #question {
+    height : 80px;
+}
+
+#right #detail > div > #answer {
+    height : 200px;
+}

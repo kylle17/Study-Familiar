@@ -1,0 +1,118 @@
+
+content {
+    width : 100%;
+}
+
+
+content #bnt_area{
+    display : flex;
+    justify-content: right;  /* 수평 가운데 정렬 */
+
+    padding : 10px 0px 10px 0px;
+}
+
+content #bnt_area > input {
+    margin : 0px 10px 0px 0px;
+}
+
+
+#menu_area {
+
+    display: flex;
+    flex-direction : column;
+    align-items: center;
+
+    padding : 0px 0px 140px 0px;
+}
+
+
+#previous_button_area {
+    width: 100%;
+
+    position: fixed;
+    bottom:0;
+    left:0;
+
+    display: flex;
+    flex-direction : column;
+    align-items: center;
+
+    padding: 20px 0px 20px 0px ;
+    background-color : white;
+}
+
+
+.menu {
+        width:40%;
+        height : 65px !important;
+
+        padding : 20px 0px 20px 20px;
+        margin : 0px 0px 10px 0px;
+
+        border: 1px solid black;
+        background-color: #F2F2F2;
+
+        font-family:나눔고딕;
+        font-size:15px;
+        font-weight: 600;
+        text-align: left;
+
+        cursor : pointer;
+}
+
+
+#previous_bnt {
+    width:100px;
+    height:100px;
+
+    padding : 0px 10px 10px 10px;
+
+    border: 1px solid black;
+    background-color: #F2F2F2;
+
+    font-size:50px;
+    font-weight: 600;
+    text-align: center;
+
+    cursor : pointer;
+}
+
+
+
+
+
+
+/*모바일에 적용할  CSS*/
+@media (max-width: 767px){
+
+
+
+    content #bnt_area > input {
+        margin : 0px 10px 0px 0px;
+    }
+
+
+
+
+    .menu {
+        width:90%;
+        height : 65px !important;
+
+        padding : 20px 0px 20px 20px;
+        margin : 0px 0px 10px 0px;
+
+        border: 1px solid black;
+        background-color: #F2F2F2;
+
+        font-size:13px;
+        font-weight: 600;
+        text-align: left;
+
+        cursor : pointer;
+    }
+
+
+
+
+
+}
