@@ -56,6 +56,37 @@ window.addEventListener('load', function(){
 
 
 
+
+        let $level1_insert_bnt = document.getElementById("level1_insert_bnt");
+        $level1_insert_bnt.addEventListener('click',function(){
+
+            if( !confirm('정말 저장하시겠습니까? ') ) return;
+
+            let send_data = [];
+            let before_data = receive_data_level1;
+            let after_data = jqxgrid_level1.get_data_all();
+
+
+            before_data.forEach(function(before_data_element , index){
+                let after_data_element = after_data[index];
+                if( !(before_data_element.level1 === after_data_element.level1 ) ){
+                    let json_obj = { before_level1 : before_data_element.level1 ,
+                                     after_level1 : after_data_element.level1    };
+                    send_data.push(json_obj);
+                }
+            });
+
+            let receive_data = sync_ajax_call( "level1" , "patch" , JSON.stringify(send_data) );
+
+            detail_reset();
+            re_select_all_grid();
+            alert('저장이 완료되었습니다.');
+
+        });
+
+
+
+
     $("#jqxgrid_level2").on('rowclick', function (event){
 
         current_selected_row_indexes.jqxgrid_level2 = jqxgrid_level2.get_selected_row().boundindex;

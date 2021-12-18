@@ -11,8 +11,9 @@ function make_jqxgrid_level1() {
             width: '360px',	// 넓이
             height: '320',	// 높이
 
-
-            selectionmode: 'singlerow' ,
+            /* 기능 */
+            editable: true, // cell 데이터 수정가능
+            selectionmode: 'singlecell' ,
             altrows: true,
         };
     }

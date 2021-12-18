@@ -13,6 +13,7 @@ import java.util.HashMap;
 public interface KnowledgeManageMapper {
 
     ArrayList<HashMap<String,String>> selectLevel1();
+    int updateLevel1(HashMap<String,String> level1);
     ArrayList<HashMap<String,String>> selectLevel2(String level1);
     int updateLevel2(HashMap<String,String> level2);
     ArrayList<HashMap<String,String>> selectCategorize_group(@Param("level1") String level1 , @Param("level2")String level2);

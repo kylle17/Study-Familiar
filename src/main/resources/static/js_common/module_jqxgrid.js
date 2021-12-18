@@ -103,8 +103,16 @@ function module_jqxgrid( grid_name , settings , columns , source ){
 
 
      function select_row( index ){
+        // row 클릭
         $jqxgrid.jqxGrid('selectrow', index );
         selected_row = $jqxgrid.jqxGrid('getrowdata', index );
+
+        // cell 클릭
+        console.log(local_columns);
+        console.log(local_columns[local_columns.length]);
+        console.log(local_columns[local_columns.length-1].datafield);
+        let datafield = local_columns[local_columns.length-1].datafield;
+        $jqxgrid.jqxGrid('selectcell', index , datafield );
      }
 
 

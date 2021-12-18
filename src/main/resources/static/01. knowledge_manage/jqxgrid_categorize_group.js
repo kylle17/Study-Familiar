@@ -8,7 +8,7 @@ function make_jqxgrid_categorize_group() {
         return {
             /* 디자인 */
             theme: 'office', // 테마
-            width: '130px',	// 넓이
+            width: '170px',	// 넓이
             height: '320',	// 높이
 
             /* 기능 */
@@ -20,7 +20,7 @@ function make_jqxgrid_categorize_group() {
 
     function columns(){
         return [
-            { text: '그룹', datafield: 'categorize_group', width: 110, align: 'center', cellsalign: 'left' },
+            { text: '그룹', datafield: 'categorize_group', width: 150, align: 'center', cellsalign: 'left' },
        ];
     }
 

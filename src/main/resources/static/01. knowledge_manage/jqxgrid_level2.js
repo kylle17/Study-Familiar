@@ -13,7 +13,7 @@ function make_jqxgrid_level2() {
 
             /* 기능 */
             editable: true, // cell 데이터 수정가능
-            selectionmode: 'singlerow' ,
+            selectionmode: 'singlecell' ,
             altrows: true,
         };
     }

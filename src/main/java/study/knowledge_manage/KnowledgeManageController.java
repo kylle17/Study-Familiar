@@ -33,6 +33,12 @@ public class KnowledgeManageController {
     public ArrayList<HashMap<String,String>> selectLevel1(){ return knowledgeManageService.selectLevel1();  }
 
 
+    @PatchMapping("level1")
+    @ResponseBody
+    public int updateLevel1( @RequestBody ArrayList<HashMap<String,String>> level1 ){
+        return knowledgeManageService.updateLevel1(level1); }
+
+
     @GetMapping("level2")
     @ResponseBody
     public ArrayList<HashMap<String,String>> selectLevel2( String level1){
@@ -42,7 +48,6 @@ public class KnowledgeManageController {
     @PatchMapping("level2")
     @ResponseBody
     public int updateLevel2( @RequestBody ArrayList<HashMap<String,String>> level2 ){
-        System.out.println(level2.toString());
         return knowledgeManageService.updateLevel2(level2); }
 
 
