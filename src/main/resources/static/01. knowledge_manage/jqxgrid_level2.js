@@ -9,10 +9,10 @@ function make_jqxgrid_level2() {
             /* 디자인 */
             theme: 'office', // 테마
             width: '470px',	// 넓이
-            height: '100%',	// 높이
+            height: '320',	// 높이
 
             /* 기능 */
-
+            editable: true, // cell 데이터 수정가능
             selectionmode: 'singlerow' ,
             altrows: true,
         };

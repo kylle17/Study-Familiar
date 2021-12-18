@@ -8,7 +8,7 @@ function make_jqxgrid_knowledge() {
         return {
             /* 디자인 */
             theme: 'office', // 테마
-            width: '100%',	// 넓이
+            width: '1790',	// 넓이
             height: '100%',	// 높이
 
             /* 기능 */

@@ -23,30 +23,51 @@
 
     <content>
 
-        <div id="left">
+        <div id="top">
             <div id="grid_area_top">
-                <div id="jqxgrid_level1"></div>
-                <div id="jqxgrid_level2"></div>
-                <div id="jqxgrid_categorize_group"></div>
-            </div>
-            <div id="grid_button_area">
-                <input type="button" value="행 삽입" id="add_row"></input>
-                <input type="button" value="▲" id="row_up"></input>
-                <input type="button" value="▼" id="row_down"></input>
-                <input type="button" value="그리드저장" id="grid_insert_bnt"></input>
+                <div id="jqxgrid_level1_area">
+                    <div class="grid_button_area">
+                        <input type="button" value="저장" id="level1_insert_bnt"></input>
+                        <input type="button" value="삭제" id="level1_delete_bnt"></input>
+                    </div>
+                    <div id="jqxgrid_level1"></div>
+                </div>
+                <div id="jqxgrid_level2_area">
+                    <div class="grid_button_area">
+                        <input type="button" value="저장" id="level2_insert_bnt"></input>
+                        <input type="button" value="삭제" id="level2_delete_bnt"></input>
+                    </div>
+                    <div id="jqxgrid_level2"></div>
+                </div>
+                <div id="jqxgrid_categorize_group_area">
+                    <div class="grid_button_area">
+                        <input type="button" value="저장" id="categorize_group_insert_bnt"></input>
+                        <input type="button" value="삭제" id="categorize_group_delete_bnt"></input>
+                    </div>
+                    <div id="jqxgrid_categorize_group"></div>
+                </div>
             </div>
             <div id="grid_area_bottom">
-                <div id="jqxgrid_knowledge"></div>
+                <div id="jqxgrid_knowledge_area">
+                    <div class="grid_button_area">
+                        <input type="button" value="행 삽입" id="add_row"></input>
+                        <input type="button" value="▲" id="row_up"></input>
+                        <input type="button" value="▼" id="row_down"></input>
+                        <input type="button" value="그리드저장" id="grid_insert_bnt"></input>
+                    </div>
+                    <div id="jqxgrid_knowledge"></div>
+                </div>
             </div>
         </div>
 
-        <div id="right">
+        <div id="bottom">
             <div id="detail">
                 <div>
                     <div>ID :</div>
                     <input type="text" id="id"/>
                 </div>
                 <div>
+
                     <div>대분류 :</div>
                     <input type="text" id="level1"/>
                 </div>

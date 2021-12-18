@@ -1,49 +1,79 @@
 
 content {
-    width : 95%;
-    height: 1100px;
+    width : 1800px;
 }
 
 
-content #left{
-    padding: 20px 20px 20px 20px;
+content #top{
+    padding: 10px 10px 10px 10px;
     width:100%;
+    height: 820px;
     border : 0.1px solid gray ;
 }
 
 
-content #left #grid_button_area{
+#grid_area_top {
     display : flex;
-    justify-content: right;  /* 수평 가운데 정렬 */
+    justify-content: left;  /* 수평 가운데 정렬 */
 
-    padding: 0px 0px 20px 0px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+    height : 370px;
+    margin : 0px 0px 5px 0px;
 }
 
 
-content #left #grid_button_area input {
+#grid_area_top > div{
+    margin: 0px 20px 0px 0px;
+    padding: 5px 5px 5px 5px;
+    border : 0.1px solid gray ;
+}
+
+
+.grid_button_area{
+    display : flex;
+    justify-content: right;  /* 수평 가운데 정렬 */
+
+    padding: 0px 10px 10px 0px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+}
+
+
+.grid_button_area input {
     margin: 0px 0px 0px 20px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
 }
 
 
 
-#grid_area_top , #grid_area_bottom {
-    display : flex;
-    justify-content: left;  /* 수평 가운데 정렬 */
-
-    height : 350px;
+#grid_area_bottom {
+    width : 1800px;
     margin : 0px 0px 5px 0px;
 }
 
 
-content #right{
-    padding: 20px 20px 20px 20px;
+#top #grid_area_bottom > div{
+    padding: 5px 5px 5px 5px;
+    border : 0.1px solid gray ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+content #bottom{
+    padding: 20px 10px 20px 10px;
     width:100%;
     border : 0.1px solid gray ;
 }
 
 
 #button_area {
-    padding : 0px 0px 10px 400px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
+    padding : 0px 0px 10px 0px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
 }
 
 
@@ -52,7 +82,7 @@ content #right{
 }
 
 
-#right #detail > div {
+#bottom #detail > div {
     display : flex;
     justify-content: left;  /* 수평 가운데 정렬 */
 
@@ -61,33 +91,33 @@ content #right{
 }
 
 
-#right #detail > div > div {
+#bottom #detail > div > div {
     width : 100px;
     margin: 0px 20px 0px 0px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
 }
 
 
-#right #detail > div > input {
+#bottom #detail > div > input {
     height : 20px;
     width : 500px;
 }
 
-#right #detail > div > select {
+#bottom #detail > div > select {
     height : 30px;
     width : 250px;
     font-size : 15px;
 }
 
 
-#right #detail > div > textarea {
+#bottom #detail > div > textarea {
     width : 800px;
     font-size : 15px;
 }
 
-#right #detail > div > #question {
+#bottom #detail > div > #question {
     height : 80px;
 }
 
-#right #detail > div > #answer {
+#bottom #detail > div > #answer {
     height : 200px;
 }

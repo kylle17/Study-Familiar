@@ -9,7 +9,7 @@ function make_jqxgrid_level1() {
             /* 디자인 */
             theme: 'office', // 테마
             width: '360px',	// 넓이
-            height: '100%',	// 높이
+            height: '320',	// 높이
 
 
             selectionmode: 'singlerow' ,
