@@ -20,6 +20,14 @@ public class KnowledgeManageService {
     public ArrayList<HashMap<String,String>> selectLevel2(String level1){ return knowledgeMapper.selectLevel2(level1); }
 
 
+    public int updateLevel2(ArrayList<HashMap<String,String>> level2){
+        level2.forEach( level2_map -> {
+            knowledgeMapper.updateLevel2(level2_map);
+        } );
+        return 1;
+    };
+
+
     public ArrayList<HashMap<String,String>> selectCategorize_group(String level1 , String level2){ return knowledgeMapper.selectCategorize_group(level1,level2); }
 
 

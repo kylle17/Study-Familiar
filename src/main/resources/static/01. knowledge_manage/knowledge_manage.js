@@ -10,6 +10,12 @@ window.addEventListener('load', function(){
 
     let current_selected_row_indexes = {};
 
+    let receive_data_level1 ;
+    let receive_data_level2 ;
+    let receive_data_categorize_group ;
+    let receive_data_knowledge ;
+
+
     let $id = document.getElementById('id');
     let $level1 = document.getElementById('level1');
     let $level2 = document.getElementById('level2');
@@ -36,7 +42,6 @@ window.addEventListener('load', function(){
 
 
     $("#jqxgrid_level1").on('rowclick', function (event){
-        console.log(jqxgrid_level1.get_selected_row());
         current_selected_row_indexes.jqxgrid_level1 = jqxgrid_level1.get_selected_row().boundindex;
 
         select_level2();
@@ -59,6 +64,39 @@ window.addEventListener('load', function(){
 
         jqxgrid_categorize_group.select_row(current_selected_row_indexes.jqxgrid_categorize_group);
         select_knowledges();
+    });
+
+
+
+
+
+    let $level2_insert_bnt = document.getElementById("level2_insert_bnt");
+    $level2_insert_bnt.addEventListener('click',function(){
+
+        if( !confirm('정말 저장하시겠습니까? ') ) return;
+
+        let send_data = [];
+        let level1 = jqxgrid_level1.get_selected_row().level1;
+        let before_data = receive_data_level2;
+        let after_data = jqxgrid_level2.get_data_all();
+
+
+        before_data.forEach(function(before_data_element , index){
+            let after_data_element = after_data[index];
+            if( !(before_data_element.level2 === after_data_element.level2) ){
+                let json_obj = { level1 : level1 ,
+                                 before_level2 : before_data_element.level2 ,
+                                 after_level2 : after_data_element.level2    };
+                send_data.push(json_obj);
+            }
+        });
+
+        let receive_data = sync_ajax_call( "level2" , "patch" , JSON.stringify(send_data) );
+
+        detail_reset();
+        re_select_all_grid();
+        alert('저장이 완료되었습니다.');
+
     });
 
 
@@ -215,8 +253,8 @@ window.addEventListener('load', function(){
 
 
     function select_level1(){
-        let receive_data = sync_ajax_call( "level1" , "get" , {} );
-        receive_data = add_empty_row(receive_data);
+        receive_data_level1 = sync_ajax_call( "level1" , "get" , {} );
+        let receive_data = add_empty_row(receive_data_level1);
         jqxgrid_level1.set_data(receive_data);
     }
 
@@ -226,8 +264,8 @@ window.addEventListener('load', function(){
 
     function select_level2(){
         let level1 = jqxgrid_level1.get_selected_row().level1;
-        let receive_data = sync_ajax_call( "level2?level1="+level1 , "get" , {} );
-        receive_data = add_empty_row(receive_data);
+        receive_data_level2 = sync_ajax_call( "level2?level1="+level1 , "get" , {} );
+        let receive_data = add_empty_row(receive_data_level2);
         jqxgrid_level2.set_data(receive_data);
     }
 
@@ -238,8 +276,8 @@ window.addEventListener('load', function(){
     function select_categorize_group(){
         let level1 = jqxgrid_level1.get_selected_row().level1;
         let level2 = jqxgrid_level2.get_selected_row().level2;
-        let receive_data = sync_ajax_call( encodeURI("categorize_group?"+"level1="+level1+"&level2="+level2) , "get" , {} );
-        receive_data = add_empty_row(receive_data);
+        receive_data_categorize_group = sync_ajax_call( encodeURI("categorize_group?"+"level1="+level1+"&level2="+level2) , "get" , {} );
+        let receive_data = add_empty_row(receive_data_categorize_group);
         jqxgrid_categorize_group.set_data(receive_data);
     }
 
@@ -250,8 +288,8 @@ window.addEventListener('load', function(){
         let level1 = jqxgrid_level1.get_selected_row().level1;
         let level2 = jqxgrid_level2.get_selected_row().level2;
         let categorize_group = jqxgrid_categorize_group.get_selected_row().categorize_group;
-        let receive_data = sync_ajax_call( encodeURI("knowledge?"+"level1="+level1+"&level2="+level2+"&categorize_group="+categorize_group) , "get" , {} );
-        receive_data = add_empty_row(receive_data);
+        let receive_data_knowledges = sync_ajax_call( encodeURI("knowledge?"+"level1="+level1+"&level2="+level2+"&categorize_group="+categorize_group) , "get" , {} );
+        let receive_data = add_empty_row(receive_data_knowledges);
         jqxgrid_knowledge.set_data(receive_data);
     }
 

@@ -20,6 +20,15 @@
 
 
 
+    <update id="updateLevel2" parameterType="HashMap" >
+        update Knowledge
+           set level2 = #{after_level2}
+         where level1 = #{level1}
+           and level2 = #{before_level2}
+    </update>
+
+
+
     <select id="selectCategorize_group" parameterType="String" resultType="HashMap">
         select A.categorize_group
           from Knowledge A

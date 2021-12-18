@@ -39,6 +39,13 @@ public class KnowledgeManageController {
         return knowledgeManageService.selectLevel2(level1); }
 
 
+    @PatchMapping("level2")
+    @ResponseBody
+    public int updateLevel2( @RequestBody ArrayList<HashMap<String,String>> level2 ){
+        System.out.println(level2.toString());
+        return knowledgeManageService.updateLevel2(level2); }
+
+
     @GetMapping("categorize_group")
     @ResponseBody
     public ArrayList<HashMap<String,String>> selectCategorize_group( String level1 , String level2 ){
