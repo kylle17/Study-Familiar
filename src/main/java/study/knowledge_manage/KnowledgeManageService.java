@@ -59,6 +59,13 @@ public class KnowledgeManageService {
     }
 
 
+    public int deleteKnowledges( ArrayList<Integer> ids ) {
+        ids.forEach( id -> knowledgeMapper.deleteKnowledge(id) );
+        return 1;
+    }
+
+
+
     public int insertKnowledge(KnowledgeDTO knowledgeDTO) {
         int same_id_count = knowledgeMapper.selectId(knowledgeDTO.getId());
         if( same_id_count == 1 ){

@@ -71,6 +71,13 @@ public class KnowledgeManageController {
     }
 
 
+    @DeleteMapping("knowledges")
+    @ResponseBody
+    public int deleteKnowledges(@RequestBody ArrayList<Integer> ids){
+        return knowledgeManageService.deleteKnowledges(ids);
+    }
+
+
     @PostMapping("knowledge")
     @ResponseBody
     public int insertKnowledge(@RequestBody KnowledgeDTO knowledgeDTO){
@@ -79,9 +86,7 @@ public class KnowledgeManageController {
 
     @DeleteMapping("knowledge")
     @ResponseBody
-    public int deleteKnowledge( @RequestBody HashMap<String,String> hashmap ){
-        int id = Integer.parseInt(hashmap.get("id"));
-        System.out.println(id);
+    public int deleteKnowledge( @RequestBody Integer id ){
         return knowledgeManageService.deleteKnowledge(id);
     }
 

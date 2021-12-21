@@ -50,13 +50,49 @@ function module_jqxgrid( grid_name , settings , columns , source ){
         selected_row = $jqxgrid.jqxGrid('getrowdata', rowindex );
     });
     let get_selected_row = function(){
-       return selected_row;
+        return selected_row;
+    }
+
+
+    let get_selected_rows = function(){
+        let selected_rows = get_selected_rows_with_rowindexes();
+        if( selected_rows.length < 1 ) selected_rows = get_selected_rows_with_cells();
+        return selected_rows;
     }
 
 
     let addClickEvent = function(receive_click_func){
         this.click_func = receive_click_func;
     }
+
+
+
+
+    function get_selected_rows_with_rowindexes(){
+        let selected_rows = [];
+        let selected_row_indexes = $jqxgrid.jqxGrid('getselectedrowindexes');
+        selected_row_indexes.forEach(function(selected_row_indexe){
+            selected_row = $jqxgrid.jqxGrid('getrowdata', selected_row_indexe );
+            selected_rows.push(selected_row);
+        });
+        return selected_rows;
+    }
+
+
+
+
+    function get_selected_rows_with_cells(){
+        let selected_rows = [];
+        let selected_cells = $jqxgrid.jqxGrid('getselectedcells');
+        selected_cells.forEach(function(selected_cell){
+            let selected_row_index = selected_cell.rowindex ;
+            selected_row = $jqxgrid.jqxGrid('getrowdata', selected_row_index );
+            selected_rows.push(selected_row);
+        });
+        return selected_rows;
+    }
+
+
 
 
 
@@ -106,11 +142,7 @@ function module_jqxgrid( grid_name , settings , columns , source ){
         // row 클릭
         $jqxgrid.jqxGrid('selectrow', index );
         selected_row = $jqxgrid.jqxGrid('getrowdata', index );
-
         // cell 클릭
-        console.log(local_columns);
-        console.log(local_columns[local_columns.length]);
-        console.log(local_columns[local_columns.length-1].datafield);
         let datafield = local_columns[local_columns.length-1].datafield;
         $jqxgrid.jqxGrid('selectcell', index , datafield );
      }
@@ -134,6 +166,7 @@ function module_jqxgrid( grid_name , settings , columns , source ){
         set_data : set_data ,
         get_data_all : get_data_all ,
         get_selected_row : get_selected_row ,
+        get_selected_rows : get_selected_rows ,
         add_row : add_row ,
         up_row : up_row  ,
         down_row : down_row  ,

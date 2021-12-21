@@ -160,14 +160,38 @@ window.addEventListener('load', function(){
 
 
 
-    let $grid_insert_bnt = document.getElementById("grid_insert_bnt");
-    $grid_insert_bnt.addEventListener('click',function(){
+    let $knowledge_insert_bnt = document.getElementById("knowledge_insert_bnt");
+    $knowledge_insert_bnt.addEventListener('click',function(){
 
         if( !confirm('정말 저장하시겠습니까? ') ) return;
 
         let send_data = jqxgrid_knowledge.get_data_all();
         send_data = empty_row_remove(send_data);
         let receive_data = sync_ajax_call( "knowledges" , "post" , JSON.stringify(send_data) );
+        detail_reset();
+        re_select_all_grid();
+        alert('저장이 완료되었습니다.');
+
+    });
+
+
+
+
+    let $knowledge_delete_bnt = document.getElementById("knowledge_delete_bnt");
+    $knowledge_delete_bnt.addEventListener('click',function(){
+
+        if( !confirm('정말 삭제하시겠습니까? ') ) return;
+
+        let send_data = [];
+        let = selected_rows = jqxgrid_knowledge.get_selected_rows();
+        console.log( selected_rows );
+        selected_rows.forEach( selected_row => send_data.push(selected_row.id) );
+
+        console.log( typeof send_data[0] );
+        console.log( send_data );
+
+        let receive_data = sync_ajax_call( "knowledges" , "delete" , JSON.stringify(send_data) );
+
         detail_reset();
         re_select_all_grid();
         alert('저장이 완료되었습니다.');
@@ -243,7 +267,7 @@ window.addEventListener('load', function(){
     let $detail_delete_bnt = document.getElementById("detail_delete_bnt");
     $detail_delete_bnt.addEventListener('click',function(){
         if( !confirm('정말 삭제하시겠습니까? ') ) return;
-        let send_data = { id :  $id.value };
+        let send_data = $id.value ;
         sync_ajax_call( "knowledge" , "delete" , JSON.stringify(send_data) );
         detail_reset();
         re_select_all_grid();
