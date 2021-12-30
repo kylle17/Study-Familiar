@@ -150,6 +150,15 @@ function Study(){
 
 
 
+    function get_answer(){
+        return answer;
+    }
+
+
+
+
+
+
     function question_type_switch_check(){
         let is_question_all_pass = true;
         knowledges.forEach(function(knowledgeDTO){
@@ -196,6 +205,7 @@ function Study(){
         get_examples : get_examples ,
         set_user_input : set_user_input ,
         correct_check : correct_check ,
+        get_answer : get_answer ,
         question_type_switch_check : question_type_switch_check ,
         is_all_pass : is_all_pass ,
         pass_record : pass_record ,

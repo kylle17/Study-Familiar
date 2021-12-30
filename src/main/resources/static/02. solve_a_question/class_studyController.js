@@ -67,6 +67,7 @@ function studyController(){
     function suggest_examples(resolve){
         let examples = study.get_examples();
         study_view.set_examples(examples , resolve);
+        study_view.set_answer(study.get_answer());
     }
 
 

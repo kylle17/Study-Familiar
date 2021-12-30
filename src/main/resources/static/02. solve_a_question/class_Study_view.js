@@ -6,6 +6,7 @@ function Study_view(){
 
     let $examples = document.getElementsByClassName('example');
     let user_input;
+    let answer;
 
 
 
@@ -25,6 +26,9 @@ function Study_view(){
             let variable_height = $level1_level2_categorize.value.match(/\n/g).length * 20;
             $level1_level2_categorize.style.height = defualt_height + variable_height + 'px';
         }
+
+        // 스크롤 맨위로 올리기
+        window.scrollTo({top:0, left:0, behavior:'auto'});
     }
 
 
@@ -86,6 +90,7 @@ function Study_view(){
 
         function get_user_input(event){
             this.style.background = 'powderblue';
+            show_answer();
             user_input = this.textContent;
             add_next_bnt();
             removeEvent_to_$examples();
@@ -120,7 +125,6 @@ function Study_view(){
             for(let i=0 ; i<$examples.length ; i++  ){
                 $examples[i].style.background = '#F2F2F2';
             }
-            console.log('$examples_design_reset 시작');
             resolve(1);
         };
 
@@ -161,8 +165,26 @@ function Study_view(){
 
 
 
+    function set_answer( received_answer ){
+        answer = received_answer;``
+    }
+
+
+
     function get_user_input(){
         return user_input;
+    }
+
+
+
+    function show_answer(){
+        for( let i=0 , length = $examples.length ; i<length ; i++ ){
+            let $example = $examples[i]
+            if( $example.value === answer ) {
+                $example.style.backgroundColor = 'red';
+                return;
+            }
+        };
     }
 
 
@@ -185,7 +207,9 @@ function Study_view(){
         set_level1_level2_categorize : set_level1_level2_categorize ,
         set_question : set_question ,
         set_examples : set_examples ,
+        set_answer : set_answer ,
         get_user_input : get_user_input ,
+        show_answer : show_answer ,
     }
 
 

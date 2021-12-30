@@ -171,7 +171,6 @@ window.addEventListener('load', function(){
         detail_reset();
         re_select_all_grid();
         alert('저장이 완료되었습니다.');
-
     });
 
 
