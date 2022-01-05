@@ -101,11 +101,18 @@ function module_jqxgrid( grid_name , settings , columns , source ){
         let selected_cell = $jqxgrid.jqxGrid('getselectedcell');
         let selected_row_index = selected_cell.rowindex;
         let selected_row_data = $jqxgrid.jqxGrid('getrowdata', selected_row_index );
-        rows.splice(  selected_row_index , 0 ,  {} );
+
+        let new_row = JSON.parse(JSON.stringify(selected_row_data));
+        new_row.id = "";
+        new_row.question = "";
+        new_row.answer = "";
+        rows.splice(  selected_row_index , 0 ,  new_row );
         set_data(rows);
+
         $jqxgrid.jqxGrid('clearselection');
         $jqxgrid.jqxGrid('selectcell', selected_row_index , selected_cell.datafield );
     }
+
 
 
 
