@@ -175,10 +175,6 @@ function Study(){
 
 
     function is_all_pass(){
-        if( current_step.question_type === "answer" ) return false;
-        knowledges.forEach(function(knowledgeDTO){
-            if( !knowledgeDTO["is_corrected_"+current_step.name] ) return false;
-        });
         if( study_steps.is_all_pass() ) return true;
         return false;
     }

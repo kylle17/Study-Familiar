@@ -7,8 +7,8 @@ function make_study_steps(){
     let study_steps = [
         { name : 'order_num_step1'     , suggest_type : 'order'     , question_type : 'question'      , answer_type : 'answer'      } ,
         { name : 'order_num_step2'     , suggest_type : 'order'     , question_type : 'answer'    , answer_type : 'question'        } ,
-        { name : 'random_step1'        , suggest_type : 'random'     , question_type : 'answer'      , answer_type : 'question'     } ,
-        { name : 'random_step2'        , suggest_type : 'random'     , question_type : 'question'    , answer_type : 'answer'       } ,
+//        { name : 'random_step1'        , suggest_type : 'random'     , question_type : 'answer'      , answer_type : 'question'     } ,
+//        { name : 'random_step2'        , suggest_type : 'random'     , question_type : 'question'    , answer_type : 'answer'       } ,
     ];
     let current_step_index = 0;
 
@@ -24,8 +24,7 @@ function make_study_steps(){
 
 
     function is_all_pass(){
-        console.log('current_step_index : ' + current_step_index);
-        if( current_step_index === 3 ) return true;
+        if( current_step_index === (study_steps.length) ) return true;
         return false;
     }
 
