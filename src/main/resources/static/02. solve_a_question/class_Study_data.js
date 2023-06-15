@@ -19,7 +19,6 @@ function Study(){
 
     (function (){
         knowledges = make_knowledges();
-
         study_steps = make_study_steps();
         current_step = study_steps.get_current_step();
     })();
@@ -27,9 +26,7 @@ function Study(){
 
 
     function make_knowledges(){
-
         let receive_data = sync_ajax_call( encodeURI("knowledges?"+"level1="+level1+"&level2="+level2+"&categorize_group="+categorize_group) , "get" , {} );
-
         let knowledges = [];
         receive_data.forEach(function(element){
             let knowledgeDTO = new KnowledgeDTO();
@@ -40,31 +37,16 @@ function Study(){
         });
         return knowledges;
     };
-
-
-
-
-
     function knowledges_length_check(){
-        if( knowledges.length > 2 ){
+        if( knowledges.length >= 1 ){
             return true;
         }else{
             return false;
         }
     }
-
-
-
-
-
     function get_level1_level2_categorize(){
         return " >   "+level1+"\n        >   "+level2;
     }
-
-
-
-
-
     function get_question(){
         if( current_step.suggest_type === 'order' ) {
             return make_order_number_question();
@@ -72,10 +54,6 @@ function Study(){
             return make_random_question();
         }
     }
-
-
-
-
     function make_order_number_question(){
         for(let i=0 ; i<knowledges.length ; i++ ){
             let knowledgeDTO = knowledges[i];
@@ -86,11 +64,6 @@ function Study(){
         }
         return question;
     }
-
-
-
-
-
     function make_random_question(){
         while(true){
             let random_number =  Math.floor(knowledges.length * Math.random());
@@ -107,25 +80,6 @@ function Study(){
 
 
 
-
-
-
-    function get_examples(){
-        let examples = [];
-        let knowledgeDTO = knowledges[question_index];
-        answer = knowledgeDTO.categorize+"\n"+knowledgeDTO[current_step.answer_type];
-        examples.push( answer );
-        while(true){
-            let random_number =  Math.floor(knowledges.length * Math.random());
-            let knowledgeDTO = knowledges[random_number];
-            let example = knowledgeDTO.categorize+"\n"+knowledgeDTO[current_step.answer_type];
-            if( answer === example ) continue;
-            if( examples.length >= 2 && examples[1] === example ) continue;
-            examples.push( example );
-            if( examples.length >= 3 ) break;
-        }
-        return examples;
-    }
 
 
 
@@ -198,7 +152,6 @@ function Study(){
         knowledges_length_check : knowledges_length_check ,
         get_level1_level2_categorize : get_level1_level2_categorize ,
         get_question : get_question ,
-        get_examples : get_examples ,
         set_user_input : set_user_input ,
         correct_check : correct_check ,
         get_answer : get_answer ,

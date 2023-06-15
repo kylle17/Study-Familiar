@@ -92,42 +92,7 @@ function Study_view(){
             this.style.background = 'powderblue';
             show_answer();
             user_input = this.textContent;
-            add_next_bnt();
-            removeEvent_to_$examples();
         }
-
-        function add_next_bnt(){
-            let next_bnt = document.createElement('div');
-            next_bnt.id = 'next';
-            next_bnt.textContent = "▶";
-            let $target = document.getElementById('example2');
-            $target.nextSibling.nextSibling.after(next_bnt);
-            let $next = document.getElementById('next');
-            $next.addEventListener('click' , function(){
-                $next_remove();
-                $examples_design_reset();
-            });
-        }
-
-        function removeEvent_to_$examples(){
-            for(let i=0 ; i<$examples.length ; i++  ){
-                $examples[i].removeEventListener( 'click' , get_user_input );
-                $examples[i].disabled = true;
-            };
-        };
-
-        function $next_remove(){
-            let $next = document.getElementById('next');
-            $next.remove();
-        }
-
-        function $examples_design_reset(){
-            for(let i=0 ; i<$examples.length ; i++  ){
-                $examples[i].style.background = '#F2F2F2';
-            }
-            resolve(1);
-        };
-
     };
 
 
@@ -166,7 +131,7 @@ function Study_view(){
 
 
     function set_answer( received_answer ){
-        answer = received_answer;``
+        answer = received_answer;
     }
 
 
