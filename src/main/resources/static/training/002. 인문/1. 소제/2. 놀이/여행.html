@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -69,15 +69,157 @@
 
 <script>
 
+    let lesson = {
+        // '제목' :
+        // {
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        // },
 
 
+        '지인 정보' :
+        {
+            "신도림" : [ "성률이 사는 곳", "3억 / 30만원" ],
+            "사당" : [ "성률이 살던 곳" ],
+            "하남" : [ "영수 사는곳" , "나라님 사는곳"],
+            "문래" : [ "신도림 근처 시내", "서쪽의 성수동" ],
+            "구서" : [ "나라님 사는 곳" ],
+            "화면" : [ "성진님 사는 곳" ],
+            "송파" : [ "지연님 사는 곳" ],
+            "잠실 새내" : [ "민수님 사는 곳" ],
+        },
+
+
+        '부산 관광지' :
+        {
+            "해운대" : [ "엘시티 (LCT)", "미포항" ],
+            "광안리" : [ "광안대교" ],
+            "태종대" : [ "원용이랑 낚시", "입산금지" ],
+            "다대포" : [ "음악분수 높이 55m (아파트 층고 2.8m)" ],
+            "송정" : [ "서핑", "MT의 성지", ],
+        },
+
+
+        '서울 관광지' :
+        {
+            "익선동" : [ "한옥거리", "위치: 종로", "종로3가 역" ],
+            "압구정 로데오거리" : [ "", "", "", "", "" ],
+            "성수동" : [ "핫플레이스" ],
+            "보수동" : [ "책방" ],
+            "서울숲" : [ "서울숲역", "위치: 성수동" ],
+            // "" : [ "", "", "", "", "" ],
+        },
+
+        '인천 관광지' :
+        {
+            "오이도" : [
+                "갯벌체험 (조개캐기)",
+                "조개구이",
+            ],
+            "강화도" : [
+                "루지+곤돌라 (1회 2만원)",
+            ],
+            // "" : [ "", "", "", "", "" ],
+        },
+
+
+        '제주도 관광지' :
+        {
+            "우도" : [
+                "소 머리모양을 닮았다는데서 유래",
+                "성산항 주차비 일 8,000원",
+                "배 배차(30분)",
+                "오전 8시 (들어가는배 , 성산항)",
+                "오후 6시 (나오는배 , 하우목동항)",
+                "오후 4시30분 (나오는배 , 천진항)",
+                "항해시간 10분",
+                "승선신고서 , 신분증",
+                "성인 왕복 10,500원",
+                "대여업체 있는 항으로 가기",
+                "우도 올레길 (5시간)",
+                "우도 버스투어 (4시간)",
+                "전기차 투어( 1시간)",
+                "전기차 대여 ( 원)",
+            ],
+            "[우도] 서빈백사 (산호 해수욕장)" : [
+                "모래가 산호처럼 생긴 해수욕장",
+                "홍조단괴 : 홍조류(김 등)가 탄산칼슘을 축적하여 돌처럼 단단하게 굳어져 버린 상태",
+                "오늘 우도오길 잘했다. (포토존)",
+                "로뎀가든 (흑돼지한치주물록 + 한라산 볶음밥)",
+            ],
+            "[우도] 망루와 등대" : [
+                "군사적 목적으로 일대를 감시하기 위해 세운 탑 (망루)",
+                "조선시대 군사 요충지",
+            ],
+            "[우도] 하고수동 해수욕장" : [
+                "모래가 부드럽고 수심이 얕다",
+                "해녀상 (70세 해녀를 모티브)",
+                "블랑로쉐 카페 (오션뷰 , 땅콩 라떼)",
+                "섬소나이 (땡짬뽕 , 크림짬뽕)",
+                "온오프 (제주 흑돼지 돈까스)",
+            ],
+            "[우도] 비양도" : [
+                "국내 3대 캠핑명소",
+                "물 때에 따라 관광",
+            ],
+            "[우도] 검멀레 해변" : [
+                "해안의 모래가 검은색에서 유래",
+                "검멀레 동굴",
+                "보트 투어 (1인 10,000원)",
+                "소섬전복 (전복뚝배기 = 전복밥 + 전복뚝배기)",
+            ],
+            "[우도] 우도봉" : [
+                "우도에서 가장 높은 봉우리",
+                "쇠머리 오름 (소머리를 닮았다)",
+                "해식애 ( 파랑(파도)의 침식작용 )",
+                "바람의 언덕 (초지대)",
+                "버기카 (오프로드용 차량 , 2인 6만원 , 30분)",
+                "우도등대 (50km 밖에서도 보임)",
+            ],
+
+            // "성산 일출봉" : [ "", "", "", "", "" ],
+            // "섭지코지" : [ "", "", "", "", "" ],
+            // "사려니 숲길" : [ "", "", "", "", "" ],
+            // "오설록" : [ "", "", "", "", "" ],
+            "쇠소깍" : [
+                "검은모래 해변",
+                "2인 2만원 (카약)",
+                "투명 카약",
+                "소요시간 20분 (카약)",
+                "테우 (제주도 전통배)",
+                "깡통열차",
+            ],
+            // "루나폴" : [ "", "", "", "", "" ],
+            // "협재 해수욕장" : [ "", "", "", "", "" ],
+            // "곽지 해수욕장" : [ "", "", "", "", "" ],
+            // "한담 해안산책로" : [ "", "", "", "", "" ],
+            // "" : [ "", "", "", "", "" ],
+            // "" : [ "", "", "", "", "" ],
+            // "" : [ "", "", "", "", "" ],
+            // "" : [ "", "", "", "", "" ],
+        },
+
+    };
+</script>
+
+
+
+
+
+<script>
+
+
+
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +248,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +330,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +410,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +489,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +562,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +643,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +684,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +745,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +783,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,42 +866,7 @@
 
 
 
-    let lesson = [
-        // {
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        // },
 
-        {
-          "신도림" : [ "성률이 사는 곳", "3억 / 30만원" ],
-          "사당" : [ "성률이 살던 곳" ],
-          "하남" : [ "영수 사는곳" ],
-          "문래" : [ "신도림 근처 시내", "서쪽의 성수동" ],
-          "송파" : [ "지연님 사는 곳" ],
-          "잠실 새내" : [ "민수님 사는 곳" ],
-        },
-
-        {
-            /* 부산 관광지 */
-          "해운대" : [ "엘시티 (LCT)", "미포항" ],
-          "광안리" : [ "광안대교" ],
-          "태종대" : [ "원용이랑 낚시", "입산금지" ],
-          "다대포" : [ "음악분수" ],
-          "송정" : [ "서핑", "", "", "", "" ],
-        },
-
-        {
-            /* 서울 관광지 */
-          "익선동" : [ "한옥거리", "위치: 종로", "종로3가 역" ],
-          "압구정 로데오거리" : [ "", "", "", "", "" ],
-          "성수동" : [ "핫플레이스" ],
-          "보수동" : [ "책방" ],
-          "서울숲" : [ "서울숲역", "위치: 성수동" ],
-          "" : [ "", "", "", "", "" ],
-        },
-
-    ];
     actStep();
 
 </script>

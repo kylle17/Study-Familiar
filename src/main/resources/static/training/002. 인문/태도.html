@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -68,16 +68,82 @@
 <body>
 
 <script>
+    let lesson = {
+        // '제목' :
+        // {
+        //   '' : [ '', '', '', '', '' ],
+        //   '' : [ '', '', '', '', '' ],
+        //   '' : [ '', '', '', '', '' ],
+        // },
+
+
+         '삶' :
+        {
+            "현명한 삶" : [
+                "한번뿐인 인생을 즐기자.",
+                "삶은 유한하다는 것을 깨닫는다.",
+                "오류가 없는게 아니라 후회가 없게 살자. ",
+                "판단은 \n이익이 아니라 , \n옳다고 생각하는 것을 선택한다.",
+                "내 삶을 되돌아봤을 때 \n후회하지 않는 결정을 한다."
+            ],
+            "부정적인 생각이 들 때" : [
+                "바르게 생각하자.",
+                "감정은 받아들이는 내 마음속에서 생겨난다.",
+                "새옹지마",
+            ],
+            "실수를 하거나 위기에 처했을 때" : [
+                "전화위복",
+            ],
+            "성장하는 법" : [
+                "Practice makes perfect",
+                "지속성",
+                "채워도 끝없는 욕망을 멀리한다.",
+                "성과 보단 실험.",
+            ],
+            '자신감' : [
+                '실력에서 나오는 것',
+                '물컵들기',
+            ],
+
+        },
+
+
+         '인간관계' :
+        {
+            "타인을 대하는 나의 자세" : [
+                "실천이 없으면 증명이 없고 증명이 없으면 신용이 없다.  - 최영의 -",
+            ],
+            "남들이 나를 싫어 할 때" : [
+                "영웅은 영웅만이 알아본다",
+            ],
+            "곁에 둘 사람을 판단하는 방법." : [
+                "좋은 일이 생겼을 때 말할 수 있는 사람인가",
+                "나쁜 일이 생겼을 때 말할 수 있는 사람인가",
+            ],
+        },
+
+
+    };
+</script>
 
 
 
+
+
+
+<script>
+
+
+
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +172,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +254,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +334,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +413,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +486,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +567,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +608,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +669,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +707,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,64 +790,7 @@
 
 
 
-    let lesson = [
-        // {
-        //   '' : [ '', '', '', '', '' ],
-        //   '' : [ '', '', '', '', '' ],
-        //   '' : [ '', '', '', '', '' ],
-        // },
 
-
-
-        {
-            /* 삶 */
-          "현명한 삶" : [
-              "한번뿐인 인생을 즐기자.",
-              "삶은 유한하다는 것을 깨닫는다.",
-              "오류가 없는게 아니라 후회가 없게 살자. ",
-              "판단은 이익이 아니라 , 옳다고 생각하는 것을 선택한다.",
-              "내 삶을 되돌아봤을 때 후회하지 않는 결정을 한다"
-          ],
-          "부정적인 생각이 들 때" : [
-              "바르게 생각하자.",
-              "감정은 받아들이는 내 마음속에서 생겨난다.",
-              "새옹지마",
-          ],
-          "실수를 하거나 위기에 처했을 때" : [
-              "전화위복",
-          ],
-          "성장하는 법" : [
-              "Practice makes perfect",
-              "지속성",
-              "채워도 끝없는 욕망을 멀리한다.",
-              "성과 보단 실험.",
-          ],
-          '자신감' : [
-              '실력에서 나오는 것',
-              '물컵들기',
-          ],
-
-        },
-
-
-        {
-            /* 인간관계 */
-          "타인을 대하는 나의 자세" : [
-              "실천이 없으면 증명이 없고 증명이 없으면 신용이 없다.  - 최영의 -",
-          ],
-          "남들이 나를 싫어 할 때" : [
-              "영웅은 영웅만이 알아본다",
-          ],
-          "곁에 둘 사람을 판단하는 방법." : [
-              "좋은 일이 생겼을 때 말할 수 있는 사람인가",
-              "나쁜 일이 생겼을 때 말할 수 있는 사람인가",
-          ],
-        },
-
-
-
-
-    ];
     actStep();
 
 </script>

@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -68,16 +68,71 @@
 <body>
 
 <script>
+    let lesson = {
+        //'제목' :
+        // {
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        // },
+
+        '제목' :
+        {
+            "소제" : [ "무엇을 말할 것인가" ],
+            "주제" : [ "왜 말할 것인가" ],
+            "전달법" : [ "어떻게 말할 것인가" ],
+        },
+
+
+        '제목' :
+        {
+            "소제" : [ "생활", "놀이" ],
+            "주제" : [ "신기한 것", "경험 공유", "재밌는 것" ],
+            "전달법" : [ "궁금증 유발", "스토리 텔링", "상황 묘사", "비유 , 은유", "상대 의견 듣기 → 내 의견 말하기"  , "비교하기" ],
+        },
+
+
+        '제목' :
+        {
+            "생활" : [ "수익", "지출" ],
+            "놀이" : [ "여행", "영상", "엑티브", "운동", "토크" ],
+        },
+
+
+        '제목' :
+        {
+            "수익" : [ "일", "투자" ],
+            "지출" : [ "의(衣)", "식(食)", "주(住)" ],
+        },
+
+
+        '제목' :
+        {
+            "일" : [ "직업", "회사" ],
+            "투자" : [ "부동산", "주식", "비트코인" ],
+        },
+
+    };
+</script>
 
 
 
+
+
+
+<script>
+
+
+
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +161,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +243,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +323,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +402,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +475,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +556,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +597,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +658,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +696,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,43 +779,10 @@
 
 
 
-    let lesson = [
-        // {
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        // },
 
-        {
-            "소제" : [ "무엇을 말할 것인가" ],
-            "주제" : [ "왜 말할 것인가" ],
-            "전달법" : [ "어떻게 말할 것인가" ],
-        },
-
-        {
-            "소제" : [ "생활", "놀이" ],
-            "주제" : [ "신기한 것", "경험 공유", "재밌는 것" ],
-            "전달법" : [ "궁금증 유발", "스토리 텔링", "상황 묘사", "비유 , 은유", "상대 의견 듣기 → 내 의견 말하기"  , "비교하기" ],
-        },
-
-        {
-            "생활" : [ "수익", "지출" ],
-            "놀이" : [ "여행", "영상", "엑티브", "운동", "토크" ],
-        },
-
-        {
-          "수익" : [ "일", "투자" ],
-          "지출" : [ "의(衣)", "식(食)", "주(住)" ],
-        },
-
-        {
-          "일" : [ "직업", "회사" ],
-          "투자" : [ "부동산", "주식", "비트코인" ],
-        },
-
-    ];
     actStep();
 
 </script>
+
 </body>
 </html>

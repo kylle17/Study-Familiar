@@ -68,16 +68,41 @@
 <body>
 
 <script>
+    let lesson = {
+        // '제목' :
+        // {
+        //   '' : [ '', '', '', '', '', ],
+        //   '' : [ '', '', '', '', '', ],
+        //   '' : [ '', '', '', '', '', ],
+        // },
+
+        '제목' :
+        {
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+        },
+
+    };
+</script>
 
 
 
+
+
+<script>
+
+
+
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +131,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +213,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +293,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +372,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +445,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +526,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +567,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +628,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +666,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,225 +749,7 @@
 
 
 
-    let lesson = [
-        // {
-        //   '' : [ '', '', '', '', ],
-        //   '' : [ '', '', '', '', ],
-        //   '' : [ '', '', '', '', ],
-        //   '' : [ '', '', '', '', ],
-        // },
 
-        {
-            /* 일식 (단어) */
-          '이자카야' : [ '술이 있는 집' , '일본식 선술집' ],
-          '돈부리 = 동' : [ '일본식 덮밥' ],
-          '텐동' : [ '튀김 덮밥' ],
-          '야끼' : [ '굽다' ],
-          '타다끼' : [ '겉만 구운 것' ],
-          '커틀릿' : [ '빵가루 묻혀 튀김 (서양식)' ],
-          '카츠' : [ '커틀릿 (일본식)' ],
-          '규' : [ '소고기' ],
-          '히츠마부시' : [ '민물장어 덮밥', '4등분 해서먹기' , '오차츠케에 말아 먹기' ],
-          '와규' : [ '일본 토종소', '일본 토종소와 교배한 소' ],
-          '나베' : [ '냄비 요리' , '전골' ],
-          '스키야키' : [ '전골 (졸임)' ],
-          '텟판야키' : [ '철판 구이' ],
-        },
-
-
-        {
-          /* 일식 */
-          '야끼니꾸' : [ '구운 소고기' ],
-          '야끼도리' : [ '구운 닭' ],
-          '타코야끼' : [ '문어 구운 것' ],
-          '야끼소바' : [ '볶음 메밀국수' ],
-          '오코노미 야끼' : [ '좋아하는 거 구움' ],
-          '멘치카츠' : [ '다진고기 커틀릿' ],
-          '돈까스' : [ '돼지고기 커틀릿' ],
-          '가라아게' : [ '닭 튀김' ],
-          '게소아게' : [ '오징어 다리 튀김' ],
-          '에비텐동' : [ '새우 튀김 덮밥' ],
-          '규동' : [ '소고기 덮밥' ],
-          '규카츠' : [ '소고기 커틀릿', '겉만 튀겨서 나옴 , 화로에 다시 구워 먹음' ],
-          '카이센동' : [ '해산물 덮밥' ],
-          '카키 후라이' : [ '굴 튀김' ],
-        },
-
-
-        {
-         /* 양식 */
-          '피자의 기원' : [ '나폴리', '이탈리아' ],
-          '에그 베네딕트' : [ '머핀 + 햄(베이컨) + 수란' ],
-          '도우' : [ '밀가루 반죽 (피자 재료)' ],
-          '토핑' : [ '도우 위에 올라가는 재료 (피자 재료)' ],
-          '치즈 크러스트' : [ '피자 도우 테두리에 치즈 넣는 것.' ],
-          '투움바 파스타' : [ '[ 고춧가루 + 크림 ] 파스다.' ],
-          '로제 파스타' : [ '[ 토마토 + 크림 or 우유 ] 파스타' ],
-          '봉골레 파스타' : [ '[ 조개 + 올리브유 ] 파스타.' ],
-          '로제' : [ '핑크 빛' ],
-          '크림 , 생크림' : [ '우유에서 지방성분을 원심분리하고 설탕을 넣은 것.' ],
-          '카르보나라' : [ '[ 크림 + 우유 ] 파스타.' ],
-          '알리오 에 올리오' : [ '[ 마늘 + 기름 ] 파스타.' ],
-        },
-
-        {
-          /* 회 */
-          /* 회 가격 정보 :  https://www.tpirates.com/%EC%8B%9C%EC%84%B8 */
-
-          '바다장어' : [
-              '양식 X \n' +
-              '자연산 kg당 : 2만원 \n',
-
-              '붕장어',
-              '아나고 (회)',
-              '갯장어 샤브샤브',
-              '개체수가 많다.',
-          ],
-          '갯장어' : [
-              '양식 X \n' +
-              '자연산 kg당 : 5만원 \n',
-
-              '하모',
-              '바다장어',
-              '갯장어 샤브샤브',
-          ],
-          '민물장어' : [
-            '양식 O \n' +
-            '양식 kg당 :  4~5만원 \n' +
-            '자연산 kg당 :  10만원 \n',
-
-            '뱀장어',
-            '풍천장어',
-            '회기 동물 (바다에 산란 , 민물에서 성장)',
-            '치어(시라시) 잡아서 양식',
-            '개체수가 작다.',
-            '지방이 많아서 더 고소하다.',
-            '항생제 문제',
-            '중국산 문제',
-          ],
-          '꼼장어' : [
-              '먹장어',
-              '자갈치 꼼장어',
-              '일제 강점기 꼼장어 껍질 구두,지갑',
-          ],
-          '대방어' : [
-              '겨울이 제철',
-              '기생충이 많은 회이나 겨울철에는 기생충이 없음' ,
-              '우리회포자 (사당)',
-          ],
-          '우럭' : [
-              '양식 O \n'+
-              '양식 kg당 :  2만원 \n' +
-              '자연산 kg당 :  3만원 \n',
-
-              '조피 볼락',
-              '매운탕 강자 (참돔보다 맛있고 돌돔&민어급 )',
-              '평균 30~40cm',
-              '우럭 낚시 썰 (50~60cm)',
-          ],
-          '광어' : [
-              '양식 O \n' +
-              '양식 kg당 :  2만5천원 \n' +
-              '자연산 kg당 :  4만원 \n',
-
-              '넙치',
-              '모래 바닥위에 서식.',
-              '양식은 배에 흑화현상이 발생한다.',
-              '자연산중에 흑화현상이 있는건 양식장에서 탈출한 것.',
-          ],
-          // '참돔' : [
-          //     '',
-          //     '',
-          // ],
-          // '돌돔' : [
-          //     '',
-          //     '',
-          // ],
-          // '감성돔' : [
-          //     '',
-          //     '',
-          // ],
-          //
-          // '숭어' : [
-          //     '',
-          //     '',
-          //     '',
-          // ],
-          // '메로' : [
-          //     '',
-          //     '',
-          //     '',
-          // ],
-        },
-
-
-        {
-          /* 회 용어 */
-          '세꼬시' : [ '연한 뼈랑 같이 썰기' ],
-          '풍천' : [ '바다와 민물이 만나는 지역', ],
-          '활어' : [
-              '즉살해서 포를 뜨고 바로 썰어낸 것.',
-              '사후경직으로 쫄깃한 식감.'
-          ],
-          '숙성회' : [
-              '즉살해서 포만떠서 냉장고에 숙성해서 썰어낸 것.',
-              '감칠 맛이 좋다.',
-              '너무 오래 숙성하면 물러진다.',
-              '초밥용으로 숙성회를 사용.',
-          ],
-          '선어' : [
-              '24시간 내에 죽은 생선을 썰어낸 것',
-              '살려서 운반하기 어려운 어종',
-              '성격이 급해서 금방 죽었다.',
-              '삼치 , 민어',
-          ],
-          '낚시 1자' : [ '10cm를 말한다.' ],
-        },
-
-
-        {
-          /* 술 */
-          '콜키지 (Cork Charge)' : [ '원하는 주류 가져와서 마실 때 내는 비용' ],
-          '츠루우메 유즈' : [ '유자 사케' ],
-        },
-
-        {
-            /* NCIT 식당 */
-            '알파리움 1동' : [ '디저트39' , 'ROOT B' , '샤브촌' , '돈블랑' ] ,
-            '알파리움 2동'  : [  '쉐누하누' , 'Buger on fleek' , '마마문스' , '마키노차야' , 'Ugly Stove' , '하파' , '차고145' ] ,
-            '테크원 타워'  : [ '온센' , '190버거' , '유브유부' ] ,
-            '알파돔 타워'  : [ '한와담' , '사위식당' , '광화문 국밥' , '신도세기' ] ,
-            '현대백화점'  : [ '정돈' , '신승반점' , '공화춘' , 'LOCOS BBQ' , '부타이' , '탐광' ] ,
-            '야브뉴프랑'  : [ '돈돈정' , '빕스' , '일면식' ] ,
-            '코트야드'  : [ '우몽' ]
-        },
-
-        {
-          /* NCIT 메뉴 */
-          '샤브촌' : [ '소고기 샤브샤브 (13,900원)', '닭한마리 꽃삼합 샤브샤브 (14,900원)' , '닭볶음탕 꽃삼합 샤브샤브 (14,900원)' ],
-          '돈블랑' : [ '아랫고기 = 생삼겹살 (16,500원)', '윗고기 = 목살 (16,500원)' ],
-          '쉐누하누' : [ '숙성 안심 (54,000원)', '숯불 큐브스테이크 덮밥 (14,000원)' ],
-          'Buger on fleek' : [ '온플릭 클래식 버거 세트 (13,000원)', '하와이안 버거 세트 (12,500원)' ],
-          '마마문스' : [ '소고기 포 (11,000원)', '분짜 (16,000원)', '★짜조★ (9,000원)', '월남쌈 싱글 (6,500원)' ],
-          '마키노차야' : [ '성인 런치 뷔페 (45,000원)' , '성인 디너 뷔페 (68,000원)' , '네이버 10% , 티몬 티켓' ],
-          'Ugly Stove' : [ '리코타 치즈 샐러드 (15,900원)', '안창&치킨 스테이크 (24,900원)', '베이컨 까르보나라 (13,900원)', '', '' ],
-          '온센' : [ '', '', '', '', '' ],
-          '사위식당' : [ '', '', '', '', '' ],
-          '광화문 국밥' : [ '', '', '', '', '' ],
-          '신도세기' : [ '', '', '', '', '' ],
-          '정돈' : [ '', '', '', '', '' ],
-          '신승반점' : [ '', '', '', '', '' ],
-          '공화춘' : [ '', '', '', '', '' ],
-          'LOCOS BBQ' : [ '', '', '', '', '' ],
-          '부타이' : [ '', '', '', '', '' ],
-          '탐광' : [ '에비 가츠동', '', '', '', '' ],
-          '돈돈정' : [ '', '', '', '', '' ],
-          '빕스' : [ '', '', '', '', '' ],
-          '일면식' : [ '', '', '', '', '' ],
-          '우몽' : [ '편백찜 (15,000원)', '', '', '', '' ],
-        },
-
-    ];
     actStep();
 
 </script>

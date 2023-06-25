@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -68,16 +68,181 @@
 <body>
 
 <script>
+    let lesson = {
+        // '제목' :
+        // {
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        // },
+
+        '히어로' :
+        {
+            "어벤져스" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "닥터 스트레인지" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+        },
+
+
+        '멜로' :
+        {
+            "클로저" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "이터널선샤인" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "신사의 품격" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "알고 있지만" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "상견니" : [
+                "대만 드라마",
+                "뜻: 네가 보고 싶어",
+                "천윈루 (과거 여주)",
+                "리쯔웨이 (과거 남주)",
+                "황위쉬안 (현재 여주)",
+                "왕취안성 (현재 남주)",
+                "타임슬립",
+                "[너의 시간속으로] 한국판",
+                "내가 예전과 달라져도 넌 그때처럼 날 사랑할까",
+                "아름다운 추억을 위해 네 시간을 좀 빌려줘",
+            ],
+
+            "또 오해영" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "연애의 온도" : [
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+        },
+
+
+        '멜로2' :
+        {
+            "김비서가 왜 그럴까" : [
+                "", "", "", "", ""
+            ],
+            "가보연 (가장보통의 연애)" : [
+                "", "", "", "", ""
+            ],
+            "연애의 발견" : [
+                "", "", "", "", ""
+            ],
+            "첨밀밀" : [
+                "", "", "", "", ""
+            ],
+            "중경삼림" : [
+                "", "", "", "", ""
+            ],
+            "아비정전" : [
+                "", "", "", "", ""
+            ],
+        },
+
+
+        '액션' :
+        {
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+        },
+
+
+        '판타지' :
+        {
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+        },
+
+
+         '작품성' :
+        {
+            "겟아웃" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+        },
+
+
+        '공포' :
+        {
+            "양들의 침묵" : [ "", "", "", "", "" ],
+            "주온" : [ "", "", "", "", "" ],
+            "1408" : [ "", "", "", "", "" ],
+        },
+
+    };
+</script>
 
 
 
+
+
+
+<script>
+
+
+
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +271,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +353,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +433,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +512,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +585,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +666,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +707,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +768,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +806,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,161 +889,7 @@
 
 
 
-    let lesson = [
-        // {
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        // },
 
-        {
-            /* 히어로 */
-          "어벤져스" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "닥터 스트레인지" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-        },
-
-
-        {
-            /* 멜로 */
-          "클로저" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "이터널선샤인" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "신사의 품격" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "알고 있지만" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "상견니" : [
-              "대만 드라마",
-              "뜻: 네가 보고 싶어",
-              "천윈루 (과거 여주)",
-              "리쯔웨이 (과거 남주)",
-              "황위쉬안 (현재 여주)",
-              "왕취안성 (현재 남주)",
-              "타임슬립",
-              "[너의 시간속으로] 한국판",
-              "내가 예전과 달라져도 넌 그때처럼 날 사랑할까",
-              "아름다운 추억을 위해 네 시간을 좀 빌려줘",
-          ],
-
-          "또 오해영" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "연애의 온도" : [
-              "",
-              "",
-              "",
-              "",
-              ""
-          ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-        },
-
-        {
-            /* 멜로2 */
-            "김비서가 왜 그럴까" : [
-                "", "", "", "", ""
-            ],
-            "가보연 (가장보통의 연애)" : [
-                "", "", "", "", ""
-            ],
-            "연애의 발견" : [
-                "", "", "", "", ""
-            ],
-            "첨밀밀" : [
-                "", "", "", "", ""
-            ],
-            "중경삼림" : [
-                "", "", "", "", ""
-            ],
-            "아비정전" : [
-                "", "", "", "", ""
-            ],
-        },
-
-
-        {
-            /* 액션 */
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-        },
-
-
-        {
-            /* 판타지 */
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-        },
-
-
-        {
-            /* 작품성 */
-          "겟아웃" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-        },
-
-
-        {
-            /* 공포 */
-          "양들의 침묵" : [ "", "", "", "", "" ],
-          "주온" : [ "", "", "", "", "" ],
-          "1408" : [ "", "", "", "", "" ],
-        },
-
-
-
-    ];
     actStep();
 
 </script>

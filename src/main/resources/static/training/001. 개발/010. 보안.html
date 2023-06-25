@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -67,17 +67,71 @@
 </head>
 <body>
 
+
+<script>
+    let lesson = {
+
+        // '제목' :
+        // {
+        //     "" : [ "", "", "" ],
+        //     "" : [ "", "", "" ],
+        //     "" : [ "", "", "" ],
+        //     "" : [ "", "", "" ],
+        // },
+
+
+        '암호화' :
+        {
+            "암호화" : [ "Encryption" ],
+            "복호화" : [ "Decryption" ],
+            "양방향" : [ "복호화 ○" ],
+            "단방향" : [ "복호화 X" ],
+            "대칭키" : [ "암호화키 = 복호화키" ],
+            "비대칭키" : [ "암호화키 ≠ 복호화키" ],
+            "Stream 알고리즘" : [ "비트단위로 암호화" ],
+            "Blcok 알고리즘" : [ "블록단위로 암호화" ],
+            "인수분해 알고리즘" : [ "자연수 N을 구성하는 두 개의 p,q 계산의 어려움을 응용." ],
+            "이산대수 알고리즘" : [ "로그 계산의 어려움을 응용." ],
+            "타원곡선 알고리즘" : [ "타원 곡선 상의 한 점의 배수 관계를 구하기 어려움을 응용." ],
+            "Hash 알고리즘" : [ "원본 데이터를 상징하는 더 짧은 값으로 변환", "고정된 크기의 값으로 변환." ],
+            "RSA" : [ "발명자 3명의 이름 앞글자", "전자서명에 활용" ],
+            "SHA" : [ "Secure Hash Algorithm (안전한 해시 알고리즘)", "NSA (미국 국가 안보국)" ],
+            "Bcrypt" : [ "결과 값 매번 다름", "변환된 코드에 복호화키가 담겨있음", "길이 60 고정" ],
+        },
+
+
+         '암호화' :
+        {
+            "암호화" : [ "양방향", "단방향" ],
+            "양방향" : [ "대칭키", "비대칭키" ],
+            "단방향" : [ "Hash 알고리즘" ],
+            "대칭키" : [ "Stream 알고리즘", "Blcok 알고리즘" ],
+            "비대칭키" : [ "인수분해 알고리즘", "이산대수 알고리즘", "타원곡선 알고리즘" ],
+            "인수분해 알고리즘" : [ "RSA" ],
+            "Hash 알고리즘" : [ "SHA", "Bcrypt" ],
+        },
+
+
+    };
+
+</script>
+
+
+
+
 <script>
 
 
 
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +160,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +242,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +322,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +401,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +474,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +555,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +596,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +657,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +695,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,55 +778,6 @@
 
 
 
-    let lesson = [
-
-        // {
-        //     "" : [ "", "", "" ],
-        //     "" : [ "", "", "" ],
-        //     "" : [ "", "", "" ],
-        //     "" : [ "", "", "" ],
-        // },
-
-        {
-            /* 암호화 */
-            "암호화" : [ "Encryption" ],
-            "복호화" : [ "Decryption" ],
-            "양방향" : [ "복호화 ○" ],
-            "단방향" : [ "복호화 X" ],
-            "대칭키" : [ "암호화키 = 복호화키" ],
-            "비대칭키" : [ "암호화키 ≠ 복호화키" ],
-            "Stream 알고리즘" : [ "비트단위로 암호화" ],
-            "Blcok 알고리즘" : [ "블록단위로 암호화" ],
-            "인수분해 알고리즘" : [ "자연수 N을 구성하는 두 개의 p,q 계산의 어려움을 응용." ],
-            "이산대수 알고리즘" : [ "로그 계산의 어려움을 응용." ],
-            "타원곡선 알고리즘" : [ "타원 곡선 상의 한 점의 배수 관계를 구하기 어려움을 응용." ],
-            "Hash 알고리즘" : [ "원본 데이터를 상징하는 더 짧은 값으로 변환", "고정된 크기의 값으로 변환." ],
-            "RSA" : [ "발명자 3명의 이름 앞글자", "전자서명에 활용" ],
-            "SHA" : [ "Secure Hash Algorithm (안전한 해시 알고리즘)", "NSA (미국 국가 안보국)" ],
-            "Bcrypt" : [ "결과 값 매번 다름", "변환된 코드에 복호화키가 담겨있음", "길이 60 고정" ],
-        },
-
-
-        {
-            /* 암호화 */
-            "암호화" : [ "양방향", "단방향" ],
-            "양방향" : [ "대칭키", "비대칭키" ],
-            "단방향" : [ "Hash 알고리즘" ],
-            "대칭키" : [ "Stream 알고리즘", "Blcok 알고리즘" ],
-            "비대칭키" : [ "인수분해 알고리즘", "이산대수 알고리즘", "타원곡선 알고리즘" ],
-            "인수분해 알고리즘" : [ "RSA" ],
-            "Hash 알고리즘" : [ "SHA", "Bcrypt" ],
-        },
-
-
-        {
-            "" : [ "", "", "" ],
-            "" : [ "", "", "" ],
-            "" : [ "", "", "" ],
-            "" : [ "", "", "" ],
-        },
-
-    ];
 
     actStep();
 

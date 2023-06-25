@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -67,17 +67,187 @@
 </head>
 <body>
 
+
+<script>
+    let lesson = {
+
+        // '제목':
+        // {
+        //   '' : [ '', '', '', '', '' ],
+        //   '' : [ '', '', '', '', '' ],
+        //   '' : [ '', '', '', '', '' ],
+        // },
+
+
+        '소프트웨어':
+        {
+            "소프트웨어 개발" : [
+                "요구사항 분석",
+                "설계",
+                "구현",
+                "테스트",
+            ],
+            "소프트웨어 종류" : [
+                "시스템 소프트웨어",
+                "응용 소프트웨어",
+            ],
+            "소프트웨어 관리" : [
+                "CI / CD",
+                "Security",
+                "Network",
+                "OS",
+                "형상관리"
+            ],
+            "소프트웨어 개발문화" : [
+                "협업",
+                "코드리뷰",
+            ],
+        },
+
+
+        '소프트웨어 개발':
+        {
+            '구현' : [
+                '백엔드',
+                '프론트엔드',
+            ],
+            '백엔드' : [
+                '백엔드 도구',
+                '백엔드 구현',
+            ],
+            '백엔드 도구' : [
+                'IDE',
+                'Programming Language',
+                'Framework',
+                'Library',
+                'DBMS' ],
+            '백엔드 구현' : [
+                '알고리즘',
+                '디자인 패턴',
+                'Web Service',
+                'Domain Servce',
+            ],
+            '테스트' : [
+                '단위 테스트',
+                '통합 테스트',
+            ],
+            '협업 툴' :[
+                'Slack',
+                'Teams',
+                'Google Chat',
+                'Kakao work',
+                'Naver works',
+                'Flow',
+
+                'Zira',
+                'Confluence',
+                'Notion',
+            ],
+            '화상회의 툴' :[
+                'Zoom',
+                'Skype',
+                'Google Meet',
+            ],
+        },
+
+
+        '소프트웨어 종류':
+        {
+            "시스템 소프트웨어" : [
+                "운영체제"
+            ],
+            "응용 소프트웨어" : [
+                "PC 응용 프로그램",
+                "모바일 응용 프로그램",
+            ],
+            "PC 응용 프로그램" : [
+                "C/S 프로그램",
+                "Web 프로그램",
+            ],
+            "모바일 응용 프로그램" : [
+                "네이티브 앱",
+                "하이브리드 앱",
+                "반응형 웹",
+                "프로그레시브 웹 앱"
+            ],
+            '하이브리드 앱' : [
+                'React Native',
+            ],
+            '프로그레스브 웹 앱' : [
+                'React PWA',
+                'Angular PWA', ],
+            'Android 네이티브 앱' : [
+                'Java' ,
+                'Kotlin',
+            ],
+            'iOS 네이티브 앱' : [
+                'Swift',
+                'Objective-C',
+            ],
+        },
+
+
+        '모바일 앱 종류':
+        {
+            '네이티브 앱' : [
+                '특정 모바일OS 맞게 개발하는 방식',
+                '성능↑',
+                '기능/안정성↑',
+                '코드 베이스 여러개',
+                '개발비용↑',
+            ],
+            '하이브리드 앱' : [
+                'HTML, CSS, JS로 개발하여 모든 모바일OS에 맞게 변환하는 개발방식',
+                '성능↓',
+                '기능/안정성↓',
+                '코드 베이스 한개',
+                '개발비용↓',
+            ],
+            '반응형 웹' : [
+                '모바일 브라우저에 맞게 디자인하는 개발방식',
+                '성능↓',
+                '기능/안정성↓',
+                '코드 베이스 한개',
+                '개발비용↓',
+            ],
+            '프로그레스브 웹 앱' : [
+                'PWA',
+                '모바일 브라우저에서 네이티브 앱 같이 사용할 수 하는 개발방식',
+                '성능↔',
+                '기능/안정성↓',
+                '코드 베이스 한개',
+                '개발비용↓',
+                '브라우저 호환 필요',
+                '앱스토어 광고효과 X',
+            ],
+            'Progressive ' : [
+                '진보적인',
+            ],
+        },
+
+
+    };
+
+</script>
+
+
+
+
+
+
 <script>
 
 
 
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +276,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +358,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +438,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +517,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +590,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +671,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +712,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +773,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +811,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,163 +894,7 @@
 
 
 
-    let lesson = [
-        // {
-        //   '' : [ '', '', '', '', '' ],
-        //   '' : [ '', '', '', '', '' ],
-        //   '' : [ '', '', '', '', '' ],
-        // },
 
-
-        {
-          "소프트웨어 개발" : [
-              "요구사항 분석",
-              "설계",
-              "구현",
-              "테스트",
-          ],
-          "소프트웨어 종류" : [
-              "시스템 소프트웨어",
-              "응용 소프트웨어",
-          ],
-          "소프트웨어 관리" : [
-              "CI / CD",
-              "Security",
-              "Network",
-              "OS",
-              "형상관리"
-          ],
-          "소프트웨어 개발문화" : [
-              "협업",
-              "코드리뷰",
-          ],
-        },
-
-
-        {
-          '구현' : [
-              '백엔드',
-              '프론트엔드',
-          ],
-          '백엔드' : [
-              '백엔드 도구',
-              '백엔드 구현',
-          ],
-          '백엔드 도구' : [
-              'IDE',
-              'Programming Language',
-              'Framework',
-              'Library',
-              'DBMS' ],
-          '백엔드 구현' : [
-              '알고리즘',
-              '디자인 패턴',
-              'Web Service',
-              'Domain Servce',
-          ],
-          '테스트' : [
-              '단위 테스트',
-              '통합 테스트',
-          ],
-          '협업 툴' :[
-              'Slack',
-              'Teams',
-              'Google Chat',
-              'Kakao work',
-              'Naver works',
-              'Flow',
-
-              'Zira',
-              'Confluence',
-              'Notion',
-          ],
-          '화상회의 툴' :[
-              'Zoom',
-              'Skype',
-              'Google Meet',
-          ],
-        },
-
-
-        {
-            "시스템 소프트웨어" : [
-                "운영체제"
-            ],
-            "응용 소프트웨어" : [
-                "PC 응용 프로그램",
-                "모바일 응용 프로그램",
-            ],
-            "PC 응용 프로그램" : [
-                "C/S 프로그램",
-                "Web 프로그램",
-            ],
-            "모바일 응용 프로그램" : [
-                "네이티브 앱",
-                "하이브리드 앱",
-                "반응형 웹",
-                "프로그레시브 웹 앱"
-            ],
-            '하이브리드 앱' : [
-                'React Native',
-            ],
-            '프로그레스브 웹 앱' : [
-                'React PWA',
-                'Angular PWA', ],
-            'Android 네이티브 앱' : [
-                'Java' ,
-                'Kotlin',
-            ],
-            'iOS 네이티브 앱' : [
-                'Swift',
-                'Objective-C',
-            ],
-        },
-
-
-        {
-            '네이티브 앱' : [
-                '특정 모바일OS 맞게 개발하는 방식',
-                '성능↑',
-                '기능/안정성↑',
-                '코드 베이스 여러개',
-                '개발비용↑',
-            ],
-            '하이브리드 앱' : [
-                'HTML, CSS, JS로 개발하여 모든 모바일OS에 맞게 변환하는 개발방식',
-                '성능↓',
-                '기능/안정성↓',
-                '코드 베이스 한개',
-                '개발비용↓',
-            ],
-            '반응형 웹' : [
-                '모바일 브라우저에 맞게 디자인하는 개발방식',
-                '성능↓',
-                '기능/안정성↓',
-                '코드 베이스 한개',
-                '개발비용↓',
-            ],
-            '프로그레스브 웹 앱' : [
-                'PWA',
-                '모바일 브라우저에서 네이티브 앱 같이 사용할 수 하는 개발방식',
-                '성능↔',
-                '기능/안정성↓',
-                '코드 베이스 한개',
-                '개발비용↓',
-                '브라우저 호환 필요',
-                '앱스토어 광고효과 X',
-            ],
-            'Progressive ' : [
-                '진보적인',
-            ],
-        },
-
-
-
-
-
-
-
-    ];
     actStep();
 
 </script>

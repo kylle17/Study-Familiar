@@ -31,7 +31,7 @@
             /*height: 15px; line-height: 15px;*/
             background-color: #f6f6f6; border: 1px solid #c5c5c5;
             font-size:12px; font-weight: normal; color: #454545;
-            /* 줄바꿈 */white-space: pre;
+            /* 줄바꿈 */white-space: pre-wrap;
         }
         #next{
             margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
@@ -68,16 +68,116 @@
 <body>
 
 <script>
+    let lesson = {
+        // '제목' :
+        // {
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        //   "" : [ "", "", "", "", "" ],
+        // },
+
+
+        '제목' :
+        {
+            "액션" : [ "바키", "지옥락", "귀멸의칼날", "나루토", "주술회전" ],
+            "멜로" : [ "", "", "", "", "" ],
+            "" : [ "", "", "", "", "" ],
+        },
+
+        '제목' :
+        {
+            "탄지로" : [ "물의 호흡 , 해의 호흡" ],
+            "네즈코" : [ "혈귀술" ],
+            "젠이츠" : [ "번개의 호흡" ],
+            "이노스케" : [ "짐승의 호흡" ],
+            "하가네즈카" : [ "도공" ],
+        },
+
+
+        '제목' :
+        {
+            "탄지로" : [ "카마도 (성)" ],
+            "네즈코" : [ "카마도 (성)" ],
+            "젠이츠" : [ "아가츠마 (성)" ],
+            "이노스케" : [ "하시비라 (성)" ],
+            "하가네즈카" : [ "호타루 (이름)" ],
+        },
+
+
+        '제목' :
+        {
+            "토미오카" : [ "물의 호흡" ],
+            "렌고쿠" : [ "화염의 호흡" ],
+            "우즈이" : [ "소리의 호흡" ],
+            "토키토" : [ "안개의 호흡" ],
+            "미츠리" : [ "사랑의 호흡" ],
+        },
+
+
+        '제목' :
+        {
+            "토미오카 " : [ "기유 (이름)" ],
+            "렌고쿠 " : [ "쿄쥬로 (이름)" ],
+            "우즈이 " : [ "텐겐 (이름)" ],
+            "토키토" : [ "무이치로 (이름)" ],
+            "미츠리" : [ "칸로지 (성)" ],
+        },
+
+
+        '제목' :
+        {
+            "코쿠시보" : [ "상현 1", "달의 호흡" ],
+            "도우마" : [ "상현 2", "냉기 (혈귀술)" ],
+            "아카자" : [ "상현 3", "파괴살 (혈귀술)" ],
+            "한텐구" : [ "상현 4", "희 , 노 , 애 , 락 , 겁 , 증 , 한" ],
+            "굣코" : [ "상현 5", "램프의 요정 , 항아리" ],
+        },
+
+
+        '제목' :
+        {
+            "주요인물" : [ "탄지로", "네즈코", "젠이츠", "이노스케", "하가네즈카" ],
+            "주/기둥 (귀살대)" : [ "토미오카", "렌고쿠", "우즈이", "토키토", "미츠리" ],
+            "상현 (혈귀/오니)" : [ "코쿠시보", "도우마", "아카자", "한텐구", "굣코" ],
+        },
+
+
+        '제목' :
+        {
+            "기술" : [ "히노카미 카구라", "첫사랑의 아련한 떨림" ],
+            "이슈" : [ "병원 여자 3인방", "일본 호칭문화" ],
+        },
+
+
+        '제목' :
+        {
+            "1기" : [ "토미오카" ],
+            "영화 무한열차" : [ "렌고쿠" ],
+            "2기 유곽편" : [ "우즈이" ],
+            "3기 도공마을편" : [ "토키토 & 미츠리" , "6번째 오니 , 대사: 적당히 좀 하란말이야", "무이치로와 굣코의 말싸움", "렌고쿠의 코등이" , "무이치로의 무는 무한의 무" ],
+        },
+
+    };
+</script>
 
 
 
+
+
+
+<script>
+
+
+
+
+    let currentLessonkeys = Object.keys(lesson);
     let currentLessonNum = 0;
     let currentStepNum = 1;
 
     const step = {
         // step0 : function (){
         //
-        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
         //     let divisionStrArr = Object.keys(currentLesson);
         //
         //     /** 태그 생성 */
@@ -106,7 +206,7 @@
         //
         // } ,
         step1 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -188,7 +288,7 @@
 
         } ,
         step2 : function (){
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -268,7 +368,7 @@
         } ,
         step3 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -347,7 +447,7 @@
         } ,
         step4 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
             let itemStrArr = [];
             divisionStrArr.forEach((key)=>{
@@ -420,7 +520,7 @@
         } ,
         step5 : function (){
 
-            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
             /** 태그 생성 */
@@ -501,7 +601,7 @@
             }
         });
 
-        let currentLesson = lesson[currentLessonNum];
+        let currentLesson = lesson[currentLessonkeys[currentLessonNum]];
         let answerLessonKeys = Object.keys(answerLesson);
 
 
@@ -542,7 +642,7 @@
 
         let MAX_STEP = Object.keys(step).length;
 
-        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= currentLessonkeys.length - 1 ) ){
             Swal.fire({
                 icon: 'success',
                 title: 'Clear',
@@ -603,7 +703,7 @@
     }
 
     function nextLesson() {
-        if( currentLessonNum < lesson.length-1 ) {
+        if( currentLessonNum < currentLessonkeys.length-1 ) {
             currentLessonNum++;
             currentStepNum = 1;
             actStep();
@@ -641,7 +741,7 @@
     function makeTitle(){
         /* Lesson Title */
         let $title = document.createElement("div");
-        $title.textContent = "LESSON "+currentLessonNum;
+        $title.textContent = currentLessonkeys[currentLessonNum];
         $title.setAttribute("id","lessonTitle");
         document.body.appendChild($title);
         /* Step Title */
@@ -724,81 +824,7 @@
 
 
 
-    let lesson = [
-        // {
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        //   "" : [ "", "", "", "", "" ],
-        // },
 
-
-        {
-          "액션" : [ "바키", "지옥락", "귀멸의칼날", "나루토", "주술회전" ],
-          "멜로" : [ "", "", "", "", "" ],
-          "" : [ "", "", "", "", "" ],
-        },
-
-
-        {
-          "탄지로" : [ "물의 호흡 , 해의 호흡" ],
-          "네즈코" : [ "혈귀술" ],
-          "젠이츠" : [ "번개의 호흡" ],
-          "이노스케" : [ "짐승의 호흡" ],
-          "하가네즈카" : [ "도공" ],
-        },
-
-        {
-          "탄지로" : [ "카마도 (성)" ],
-          "네즈코" : [ "카마도 (성)" ],
-          "젠이츠" : [ "아가츠마 (성)" ],
-          "이노스케" : [ "하시비라 (성)" ],
-          "하가네즈카" : [ "호타루 (이름)" ],
-        },
-
-        {
-            "토미오카" : [ "물의 호흡" ],
-            "렌고쿠" : [ "화염의 호흡" ],
-            "우즈이" : [ "소리의 호흡" ],
-            "토키토" : [ "안개의 호흡" ],
-            "미츠리" : [ "사랑의 호흡" ],
-        },
-
-        {
-            "토미오카 " : [ "기유 (이름)" ],
-            "렌고쿠 " : [ "쿄쥬로 (이름)" ],
-            "우즈이 " : [ "텐겐 (이름)" ],
-            "토키토" : [ "무이치로 (이름)" ],
-            "미츠리" : [ "칸로지 (성)" ],
-        },
-
-        {
-            "코쿠시보" : [ "상현 1", "달의 호흡" ],
-            "도우마" : [ "상현 2", "냉기 (혈귀술)" ],
-            "아카자" : [ "상현 3", "파괴살 (혈귀술)" ],
-            "한텐구" : [ "상현 4", "희 , 노 , 애 , 락 , 겁 , 증 , 한" ],
-            "굣코" : [ "상현 5", "램프의 요정 , 항아리" ],
-        },
-
-
-        {
-          "주요인물" : [ "탄지로", "네즈코", "젠이츠", "이노스케", "하가네즈카" ],
-          "주/기둥 (귀살대)" : [ "토미오카", "렌고쿠", "우즈이", "토키토", "미츠리" ],
-          "상현 (혈귀/오니)" : [ "코쿠시보", "도우마", "아카자", "한텐구", "굣코" ],
-        },
-
-        {
-          "기술" : [ "히노카미 카구라", "첫사랑의 아련한 떨림" ],
-          "이슈" : [ "병원 여자 3인방", "일본 호칭문화" ],
-        },
-
-        {
-          "1기" : [ "토미오카" ],
-          "영화 무한열차" : [ "렌고쿠" ],
-          "2기 유곽편" : [ "우즈이" ],
-          "3기 도공마을편" : [ "토키토 & 미츠리" , "6번째 오니 , 대사: 적당히 좀 하란말이야", "무이치로와 굣코의 말싸움", "렌고쿠의 코등이" , "무이치로의 무는 무한의 무" ],
-        },
-
-    ];
     actStep();
 
 </script>
