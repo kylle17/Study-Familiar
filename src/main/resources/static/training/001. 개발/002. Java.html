@@ -1,0 +1,1242 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Draggable + Sortable</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <style>
+        #lessonTitle , #stepTitle{
+            height: 25px; line-height: 25px; padding-left: 10px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:12px; font-weight: bold;
+        }
+        ul {
+            /*height: 70%;*/
+            list-style-type: none; margin: 0px 100px 10px 0px; padding: 0px 0px 10px 0px;
+            border: 1px solid #000;
+            overflow: auto; /* 스크롤이 필요할 때만 스크롤 표시 */
+        }
+        .division {
+            height: 30px; line-height: 30px; padding-left: 10px; margin-bottom: 10px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:12px; font-weight: bold;
+        }
+        #itemUlBox{
+            width:100%; height:350px; padding: 5px 0px 5px 5px;
+            border: 1px solid #000; overflow: auto; /* 스크롤이 필요할 때만 스크롤 표시 */
+        }
+        .item {
+            margin: 5px 5px 5px 20px; padding: 5px 5px 5px 10px;
+            /*height: 15px; line-height: 15px;*/
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:12px; font-weight: normal; color: #454545;
+            /* 줄바꿈 */white-space: pre;
+        }
+        #next{
+            margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            height: 20px; line-height: 25px;
+            font-size:20px; font-weight: 600;text-align: center; cursor : pointer;
+        }
+        #nextBox {
+            display: flex; /* 플렉스 컨테이너로 설정 */
+        }
+        #nextStep , #beforeStep, #nextLesson , #beforeLesson{
+            flex: 1; height: 25px; line-height: 25px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:13px; font-weight: 600; text-align: center; cursor : pointer;
+        }
+        #space{
+            width: 100%; height: 50px;
+        }
+        .waiting{
+            width:100%; max-height:150px; margin: 5px 0px 5px 0px; padding: 5px 0px 0px 5px;
+        }
+        .waiting .division , .waiting .item{
+            width:250px; overflow: auto; /* 스크롤이 필요할 때만 스크롤 표시 */
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+</head>
+<body>
+
+<script>
+
+
+
+    let currentLessonNum = 0;
+    let currentStepNum = 1;
+
+    const step = {
+        // step0 : function (){
+        //
+        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let divisionStrArr = Object.keys(currentLesson);
+        //
+        //     /** 태그 생성 */
+        //     //초기화
+        //     document.body.innerHTML = "";
+        //     // Lesson , Step Title
+        //     makeTitle();
+        //     // 구분 생성
+        //     divisionStrArr.forEach((divisionStr)=>{
+        //         let $ul = document.createElement("ul");
+        //         let $divition = document.createElement("li");
+        //         $divition.textContent = divisionStr;
+        //         $divition.setAttribute("class","division");
+        //         $ul.appendChild($divition);
+        //         let items = shuffle(currentLesson[divisionStr]);
+        //         items.forEach((item)=>{
+        //             let $item = document.createElement("li");
+        //             $item.textContent = item;
+        //             $item.setAttribute("class","item");
+        //             $ul.appendChild($item);
+        //         });
+        //         document.body.appendChild($ul);
+        //     });
+        //     // 다음 버튼
+        //     makeNextBtn();
+        //
+        // } ,
+        step1 : function (){
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let items = [];
+            divisionStrArr.forEach((divisionStr)=>{
+                items = [ ...items , ...currentLesson[divisionStr] ];
+            });
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            items = shuffle(items);
+            items.forEach((item)=>{
+                let $ul = document.createElement("ul");
+                let $item = document.createElement("li");
+                $item.textContent = item;
+                $item.setAttribute("class","item");
+                $ul.appendChild($item);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 구분 생성
+            let $ul = document.createElement("ul");
+            $ul.setAttribute("class","waiting");
+            let $stepStr = document.getElementById("stepTitle");
+            divisionStrArr = shuffle(divisionStrArr);
+            divisionStrArr.forEach((divisionStr)=>{
+                let $divition = document.createElement("li");
+                $divition.textContent = divisionStr;
+                $divition.setAttribute("class","division");
+                $ul.append($divition);
+            });
+            document.body.insertBefore($ul, $stepStr.nextSibling);
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+            const $uls = document.getElementsByTagName("ul");
+            const uls = Array.from($uls);
+
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",(event)=>{
+                    divisionsReset();
+                    division.classList.add('target');
+                    division.style.backgroundColor = '#A7FFEB';
+                    event.stopPropagation();
+                });
+            });
+
+            uls.forEach((ul)=>{
+                ul.addEventListener("touchstart",()=>{
+                    let $beforeDivision = ul.getElementsByClassName("division")[0];
+                    if( $beforeDivision != undefined && $beforeDivision.parentNode.classList.contains("waiting") ) return;
+                    let $targetDivision = document.getElementsByClassName("target");
+                    if( $targetDivision.length <= 0 ) return;
+                    if( $beforeDivision != undefined ) {
+                        $beforeDivision.parentNode.removeChild($beforeDivision);
+                    }
+                    let $clonedTargetDivision = $targetDivision[0].cloneNode(true);
+                    ul.prepend($clonedTargetDivision);
+                    divisionsReset();
+                });
+            });
+
+            function divisionsReset() {
+                let divisions = Array.from($divisions);
+                divisions.forEach((division)=>{
+                    division.classList.remove('target');
+                    division.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+
+        } ,
+        step2 : function (){
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let items = shuffle(currentLesson[divisionStr]);
+                items.forEach((item)=>{
+                    let $item = document.createElement("li");
+                    $item.textContent = item;
+                    $item.setAttribute("class","item");
+                    $ul.appendChild($item);
+                });
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 구분 생성
+            divisionStrArr = shuffle(divisionStrArr);
+            let tempIndex = 0;
+            let $uls = document.getElementsByTagName("ul");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $divition = document.createElement("li");
+                $divition.textContent = divisionStr;
+                $divition.setAttribute("class","division");
+                let $ul = $uls[tempIndex];
+                $ul.insertBefore($divition, $ul.firstChild);
+                tempIndex++;
+            });
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+            $uls = document.getElementsByTagName("ul");
+            const uls = Array.from($uls);
+
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",(event)=>{
+                    divisionsReset();
+                    division.classList.add('target');
+                    division.style.backgroundColor = '#A7FFEB';
+                    event.stopPropagation();
+                });
+            });
+
+            uls.forEach((ul)=>{
+                ul.addEventListener("touchstart",()=>{
+                    let $beforeDivision = ul.getElementsByClassName("division")[0];
+                    if( $beforeDivision != undefined ) {
+                        let $beforeDivisionUl = document.getElementsByClassName("target")[0].parentNode;
+                        $beforeDivisionUl.prepend($beforeDivision);
+
+                    }
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    ul.prepend($target[0]);
+                    divisionsReset();
+                });
+            });
+
+            function divisionsReset() {
+                divisions.forEach((division)=>{
+                    division.classList.remove('target');
+                    division.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+
+        } ,
+        step3 : function (){
+
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+            let itemStrArr = [];
+            divisionStrArr.forEach((key)=>{
+                itemStrArr.push(...currentLesson[key]);
+            });
+
+
+            /** 태그 생성 */
+            itemStrArr = shuffle(itemStrArr);
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let $ul = document.createElement("ul");
+            $ul.setAttribute("class","waiting");
+            let $li = document.createElement("li");
+            $li.textContent = "항목";
+            $li.setAttribute("class","division");
+            $ul.appendChild($li);
+            itemStrArr.forEach( itemStr => {
+                let $li = document.createElement("li");
+                $li.textContent = itemStr;
+                $li.setAttribute("class","item");
+                $ul.appendChild($li);
+            });
+            document.body.appendChild($ul);
+            // 구분 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+
+
+
+            /** 룰 생성 */
+            const $items = document.getElementsByClassName("item");
+            const items = Array.from($items);
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+
+
+            items.forEach((item)=>{
+                item.addEventListener("touchstart",()=>{
+                    itemsReset();
+                    item.classList.add('target');
+                    item.style.backgroundColor = '#A7FFEB';
+                });
+            });
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",()=>{
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    division.parentNode.appendChild($target[0]);
+                    itemsReset();
+                });
+            });
+
+            function itemsReset() {
+                items.forEach((item)=>{
+                    item.classList.remove('target');
+                    item.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+        } ,
+        step4 : function (){
+
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+            let itemStrArr = [];
+            divisionStrArr.forEach((key)=>{
+                itemStrArr.push(...currentLesson[key]);
+            });
+
+            /** 태그 생성 */
+            itemStrArr = shuffle(itemStrArr);
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 구분 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 항목 생성
+            let tempIndex = 0;
+            itemStrArr.forEach( itemStr => {
+                let $targets = document.getElementsByClassName("division");
+                let $li = document.createElement("li");
+                $li.textContent = itemStr;
+                $li.setAttribute("class","item");
+                $targets[tempIndex].parentNode.appendChild($li);
+                tempIndex = ( tempIndex < divisionStrArr.length-1 )? tempIndex+1 : 0;
+            });
+
+
+
+            /** 룰 생성 */
+            const $items = document.getElementsByClassName("item");
+            const items = Array.from($items);
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+
+            items.forEach((item)=>{
+                item.addEventListener("touchstart",()=>{
+                    itemsReset();
+                    item.classList.add('target');
+                    item.style.backgroundColor = '#A7FFEB';
+                });
+            });
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",()=>{
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    division.parentNode.appendChild($target[0]);
+                    itemsReset();
+                });
+            });
+
+            function itemsReset() {
+                items.forEach((item)=>{
+                    item.classList.remove('target');
+                    item.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+        } ,
+        step5 : function (){
+
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            document.body.innerHTML = "";
+            // 다음버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 구분 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+
+
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+
+            divisions.forEach((division)=>{
+                let items = [ ...currentLesson[division.textContent] ];
+                division.addEventListener("touchstart",()=>{
+                    while(true){
+                        if(items.length <= 0) break;
+                        let $item = document.createElement("li");
+                        $item.textContent = items.shift();
+                        $item.setAttribute("class","item");
+                        division.parentNode.appendChild($item);
+                    }
+                });
+            });
+
+
+        }
+    };
+
+    function shuffle(arr) {
+        let array = JSON.parse(JSON.stringify(arr));
+        for (let index = array.length - 1; index > 0; index--) {
+            const randomPosition = Math.floor(Math.random() * (index + 1));
+            const temporary = array[index];
+            array[index] = array[randomPosition];
+            array[randomPosition] = temporary;
+        }
+        return array;
+    };
+
+    function shuffleObject(obj){
+        const keys = Object.keys(obj);
+        keys.sort(() => Math.random() - 0.5);
+
+        const shuffledObj = {};
+        keys.forEach(key => {
+            shuffledObj[key] = obj[key];
+        });
+        return shuffledObj;
+    }
+
+    function checkAnswer(){
+
+        let $asnwerDivisions = document.getElementsByClassName("division");
+        let answerLesson = {};
+        Array.from($asnwerDivisions).forEach(($answerDivision)=>{
+            answerLesson[$answerDivision.textContent] = [];
+            if( $answerDivision.parentNode.tagName.toLowerCase() === "ul" ){
+                let childNodes = $answerDivision.parentNode.childNodes;
+                childNodes.forEach((childNode)=>{
+                    if( childNode.classList.contains("item") ) answerLesson[$answerDivision.textContent].push(childNode.textContent);
+                });
+            }
+        });
+
+        let currentLesson = lesson[currentLessonNum];
+        let answerLessonKeys = Object.keys(answerLesson);
+
+
+
+        for (let i = 0; i < answerLessonKeys.length ; i++) {
+            let key = answerLessonKeys[i];
+            if( key === "항목") continue;
+            let answerValues = answerLesson[key];
+            if( answerValues == undefined || answerValues.length <= 0 ){
+                Toast.fire({
+                    icon: 'error',
+                    title: '오답 입니다.'
+                });
+                return;
+            }
+            for (let j = 0; j < answerValues.length; j++) {
+                if( currentLesson[key].indexOf(answerValues[j]) < 0) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: '오답 입니다.'
+                    });
+                    return;
+                };
+            }
+
+        }
+
+        Toast.fire({
+            icon: 'success',
+            title: 'SUCCESS',
+            text: '정답입니다.',
+        }).then(result => {
+            next();
+        });
+    };
+
+    function next(){
+
+        let MAX_STEP = Object.keys(step).length;
+
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+            Swal.fire({
+                icon: 'success',
+                title: 'Clear',
+                text: '축하합니다.' +
+                    '모든 문제를 다 맞췄습니다.',
+            }).then(result => {
+                open(location, '_self').close();
+            });
+        } else if( currentStepNum  >= MAX_STEP   ){
+            currentLessonNum ++;
+            currentStepNum = 1;
+            actStep();
+        }else{
+            currentStepNum ++;
+            actStep();
+        };
+    };
+
+    function beforeStep(){
+        if( currentStepNum > 1 ) {
+            currentStepNum--;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '첫번째 Step입니다.',
+            });
+        }
+    }
+
+    function nextStep(){
+        let MAX_STEP = Object.keys(step).length;
+        if( currentStepNum < MAX_STEP ) {
+            currentStepNum++;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '마지막 Step입니다.',
+            });
+        }
+    }
+
+    function beforeLesson() {
+        if( currentLessonNum > 0 ) {
+            currentLessonNum--;
+            currentStepNum = 1;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '첫번째 Lesson입니다.',
+            });
+        }
+    }
+
+    function nextLesson() {
+        if( currentLessonNum < lesson.length-1 ) {
+            currentLessonNum++;
+            currentStepNum = 1;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '마지막 Lesson입니다.',
+            });
+        }
+    }
+
+    function actStep(){
+
+        switch(currentStepNum){
+            case 1 :
+                step.step1();
+                break;
+            case 2 :
+                step.step2();
+                break;
+            case 3 :
+                step.step3();
+                break;
+            case 4 :
+                step.step4();
+                break;
+            case 5 :
+                step.step5();
+                break;
+
+        }
+    };
+
+    function makeTitle(){
+        /* Lesson Title */
+        let $title = document.createElement("div");
+        $title.textContent = "LESSON "+currentLessonNum;
+        $title.setAttribute("id","lessonTitle");
+        document.body.appendChild($title);
+        /* Step Title */
+        let $step = document.createElement("div");
+        $step.textContent = "STEP "+currentStepNum;
+        $step.setAttribute("id","stepTitle");
+        document.body.appendChild($step);
+    }
+
+    function makeNextBtn(){
+
+        /* next box */
+        let $nextBox = document.createElement("div");
+        $nextBox.setAttribute("id","nextBox");
+
+        /* 이전 Lesson  */
+        let $beforeLesson = document.createElement("div");
+        $beforeLesson.setAttribute("id","beforeLesson");
+        $beforeLesson.textContent = "◀ Lesson";
+        $beforeLesson.setAttribute("onclick","beforeLesson();");
+        $nextBox.appendChild($beforeLesson);
+
+        /* 이전 Step */
+        let $beforeStep = document.createElement("div");
+        $beforeStep.setAttribute("id","beforeStep");
+        $beforeStep.textContent = "◀ Step ";
+        $beforeStep.setAttribute("onclick","beforeStep();");
+        $nextBox.appendChild($beforeStep);
+
+        /* 다음 Step */
+        let $nextStep = document.createElement("div");
+        $nextStep.setAttribute("id","nextStep");
+        $nextStep.textContent = "Step ▶";
+        $nextStep.setAttribute("onclick","nextStep();");
+        $nextBox.appendChild($nextStep);
+
+        /* 다음 Lesson  */
+        let $nextLesson = document.createElement("div");
+        $nextLesson.setAttribute("id","nextLesson");
+        $nextLesson.textContent = "Lesson ▶";
+        $nextLesson.setAttribute("onclick","nextLesson();");
+        $nextBox.appendChild($nextLesson);
+
+        document.body.appendChild($nextBox);
+
+        /* 정답 확인 */
+        let $next = document.createElement("div");
+        $next.setAttribute("id","next");
+        $next.textContent = "▶";
+        $next.setAttribute("onclick","checkAnswer();");
+        document.body.appendChild($next);
+
+
+
+
+
+    }
+
+
+    function makeSpace(){
+        /* 공백 */
+        let $space = document.createElement("div");
+        $space.setAttribute("id","space");
+        document.body.appendChild($space);
+    }
+
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'center-center',
+        showConfirmButton: false,
+        timer: 500,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+
+
+
+
+    let lesson = [
+
+        // 특수문자
+        {
+            ' [ ] ' : [ '대괄호' ],
+            ' { } ' : [ '중괄호' ],
+            ' ( ) ' : [ '(소)괄호' ],
+            ' < > ' : [ '꺽쇠괄호' ],
+            ' a-  ' : [ '하이픈(Hyphen)', '대쉬(Dash)', ],
+            ' a_  ' : [ '언더스코어(Underscore)' ],
+            ' = ' : [ '이퀄' ],
+            ' \/ ' : [ '슬래쉬(Slash)' ],
+            ' \\ ' : [ '백슬래쉬(Backslash)' ],
+            ' . ' : [ '닷(Dot)', '마침표', '피리어드(Period)' ],
+            ' , ' : [ '콤마' ],
+            ' : ' : [ '콜론' ],
+            ' ; ' : [ '세미 콜론' ],
+            ' ` ' : [ '백틱(Backtick)' ],
+            ' " '  : [ '큰 따옴표', '쿼테이션' ],
+            ' \' ' : [ '작은 따옴표', '아포스트로피' ],
+            ' * ' : [ '에스터리스크(Asterisk)', ],
+        },
+
+
+        // Java
+        {
+            '처리' : [
+                '제어문',
+                '연산자',
+            ],
+            '속도 & 메모리' : [
+                '자료형',
+                '자료구조',
+            ],
+            '재사용' : [
+                '함수',
+                '객체지향 프로그래밍',
+                '함수형 프로그래밍',
+            ],
+            '오류 처리' : [
+                'Null 처리',
+                '예외 처리',
+            ],
+        },
+
+
+        // 제어문 & 연산자 구조
+        {
+            '제어문' : [
+                '조건문',
+                '반복문',
+            ],
+            '조건문' : [' if , else , else if , switch ',],
+            '반복문' : [
+                'while문',
+                'for문',
+                'forEach문',
+                'Iterator',
+                'Stream',
+            ],
+            '연산자' : [
+                '산술연산',
+                '논리연산',
+                '비교연산',
+            ],
+            '비교연산' : [
+                '비교연산자',
+                'eqauls',
+                'hashcode',
+            ],
+            '산술연산자' : [ ' + , - , / , * , %', ],
+            '논리연산자' : [ ' || , && , !', ],
+            '비교연산자' : [ ' == , != , > , < , <= , >= ', ],
+        },
+
+        {
+            /* 속도/메모리 , 재사용 */
+            '자료형' : [
+                '원시자료형',
+                '참조자료형',
+                '제네릭',
+            ],
+            '자료구조' : [
+                'Array',
+                'Collection',
+            ],
+            '객체지향 프로그래밍' : [
+                '객체',
+                '인스턴스',
+                '클래스',
+                '추상 클래스',
+                '인터페이스',
+                '다형성',
+            ],
+            '함수형 프로그래밍' : [
+                '함수형 인터페이스',
+                '고계함수',
+            ],
+
+
+        },
+
+
+
+        {
+            /* 객체지향 명칭 */
+            'Object' : [ '객체' ],
+            'Instance' : [ '인스턴스' ],
+            'Class' : [ '클래스' ],
+            'Abstract Class' : [ '추상 클래스' ],
+            'Interface' : [ '인터페이스' ],
+            'Polymorphism' : [ '다형성' ],
+            'Parameter' : [ '매개변수' ],
+            'Argument' : [ '인자/인수' ],
+            'Field' : [ '필드', '멤버변수' ],
+            'Method' : [ '메소드' ],
+            'Constructor' : [ '생성자' ],
+            'abstract' : [ '추상 클래스' ],
+            'interface' : [ '인터페이스' ],
+            'final' : [ '최종적인' ],
+            'static' : [ '고정된' ],
+            'instance' : [ '인스턴스', '메모리상에 할당된 객체' ],
+        },
+
+
+        {
+            /* 객체지향 개념 */
+            'Parameter' : [
+                '메소드 선언시 전달하는 변수 목록'
+            ],
+            'Argument' : [
+                '메소드 호출시 전달하는 변수 목록'
+            ],
+            'Field' : [
+                '클래스의 속성을 나타내는 변수'
+            ],
+            'Method' : [
+                '클래스가 수행할 수 있는 동작을 정의한 함수'
+            ],
+            'Constructor' : [
+                '객체를 생성하고 초기화하기 위한 메서드',
+                '클래스와 동일한 이름을 가지고 반환값이 없는 메서드'
+            ],
+            'this' : [
+                '인스턴스 자기 자신을 가리키는 키워드',
+            ],
+            'super' : [
+                '상속 관계에서 부모 클래스를 나타내는 키워드',
+                '부모 클래스의 멤버(필드, 메서드)에 접근할 수 있게 해주는 키워드',
+            ],
+            '추상 메소드' : [
+                '구현되지 않은 메소드'
+            ],
+            'abstract' : [
+                '하나 이상의 추상 메소드가 있는 클래스'
+            ],
+            'interface' : [
+                '추상 메소드로만 구성된 클래스'
+            ],
+            'final' : [
+                '상속/변경 금지'
+            ],
+            'static' : [
+                '스태틱 영역에 변수 저장',
+                '전역에서 사용할 수 있다.'
+            ],
+            'implements' : [
+                '인터페이스 구현',
+            ],
+            'extends' : [
+                '클래스 상속',
+            ],
+            'instance' : [
+                '메모리상에 할당된 객체',
+            ],
+            'Override' : [
+                '메서드를 재정의',
+            ],
+            'Overloading' : [
+                '같은 이름의 메서드를 여러 개 정의',
+                '파라미터 갯수가 다르다',
+                '파라미터 순서가 다르다',
+            ],
+        },
+
+
+        // String
+        {
+            '특정문자와 같은지 확인' : [ 'target.equals("Enter");' ],
+            '길이 반환' : [ 'target.length();' ],
+            'int를 String으로 변환' : [ 'String.valueOf(100);' ],
+            '문자 1개 가져오기 \n( return char )' : [ 'target.charAt(10);' ],
+            '특정문자로 나눠서 문자배열 변환 \n( return String[] )' : [ 'target.split(" ");' ],
+            '대문자로 변환' : [ 'target.toUpperCase();' ],
+            '소문자로 변환' : [ 'target.toLowerCase();' ],
+            '특정문자를 다른 문자로 변환' : [ 'target.replace("name","kurt");' ],
+            'Char 배열로 반환 \n( return char[] )' : [ 'char[] chars = target.toCharArray();' ],
+            '앞,뒤 공백제거' : [ 'target.trim();' ],
+            '특정문자 포함 확인' : [ 'target.contains("Enter");' ],
+            '특정문자 잘라오기' : [ 'target.substring(0,5); \w(beginIndex,endIndex+1)' ],
+            '빈 문자열인지 확인' : [ 'target.isEmpty();' ],
+            '공백 문자열인지 확인' : [ 'target.isBlank();' ],
+        },
+
+
+        // Date
+        {
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+        },
+
+
+        // Collection 구조
+        {
+            'Collection' : [ 'List', 'Set', 'Map', ],
+            'List' : [
+                'ArrayList',
+                'LinkedList',
+                'Queue',
+                'PriorityQueue',
+                'Stack',
+                'Vector',
+            ],
+            'Set' : [
+                'HashSet',
+                'TreeSet',
+            ],
+            'Map' : [
+                'HashMap',
+                'TreeMap',
+                'LinkedHashMap',
+                'MultiValueMap',
+                'LinkedMultiValueMap',
+                'Properties',
+                'HashTable',
+            ],
+        },
+
+
+        // Collection 개념
+        {
+            'Array' : [
+                '연속적인 위치에 데이터 저장',
+                '인덱스로 바로 접근 \n데이터주소 = 배열주소 + ( 인덱스 X 자료형 크기 )',
+                '추가/삭제 시에 주변 데이터를 이동한다.',
+                '특정 데이터를 찾기위해 순서대로 접근한다.',
+                '데이터 이외에 저장하는 값이 없다.',
+
+                '순서 O \n'+
+                '정렬 O \n'+
+                '중복 O \n'+
+                '순차접근 속도 ↑ \n'+
+                '임의접근 속도 ↑ \n'+
+                '검색 속도 ↓ \n'+
+                '수정 속도 ↓ \n'+
+                '메모리 용량 ↓ \n'+
+                '메모리 효율 ↓ \n' ,
+            ],
+            'ArrayList' : [
+                'Array의 데이터 구조를 사용 ' ,
+                'Array의 길이를 자동으로 조절해준다. ' ,
+
+                '순서 O \n'+
+                '정렬 O \n'+
+                '중복 O \n'+
+                '순차접근 속도 ↑ \n'+
+                '임의접근 속도 ↑ \n'+
+                '검색 속도 ↓ \n'+
+                '수정 속도 ↓ \n'+
+                '메모리 용량 ↓ \n'+
+                '메모리 효율 ↓ \n' ,
+            ],
+            'LinkedList' : [
+                '임의의 위치에 노드와 데이터로 저장',
+                '노드에 다음 데이터 주소 저장',
+                '머리 노드부터 연결된 노드를 거쳐서 접근',
+                '추가/삭제 시에 노드의 다음 데이터 주소 변경',
+
+                '순서 O \n'+
+                '정렬 O \n'+
+                '중복 O \n'+
+                '순차접근 속도 ↓ \n'+
+                '임의접근 속도 ↓ \n'+
+                '검색 속도 ↓ \n'+
+                '수정 속도 ↑ \n'+
+                '메모리 용량 ↑ \n'+
+                '메모리 효율 ↑ \n' ,
+            ],
+
+            // 'Queue' : [
+            //     '',
+            //
+            //     '순서 \n'+
+            //     '정렬 \n'+
+            //     '중복 \n'+
+            //     '순차접근 \n'+
+            //     '임의접근 \n'+
+            //     '검색 \n'+
+            //     '수정 \n'+
+            //     '메모리 \n'
+            // ],
+            // 'PriorityQueue' : [
+            //     '',
+            //
+            //     '순서 \n'+
+            //     '정렬 \n'+
+            //     '중복 \n'+
+            //     '순차접근 \n'+
+            //     '임의접근 \n'+
+            //     '검색 \n'+
+            //     '수정 \n'+
+            //     '메모리 \n'
+            // ],
+            // 'Stack' : [
+            //     '',
+            //
+            //     '순서 \n'+
+            //     '정렬 \n'+
+            //     '중복 \n'+
+            //     '순차접근 \n'+
+            //     '임의접근 \n'+
+            //     '검색 \n'+
+            //     '수정 \n'+
+            //     '메모리 \n'
+            // ],
+            // 'HashSet' : [
+            //     '',
+            //
+            //     '순서 X \n'+
+            //     '정렬 X \n'+
+            //     '중복 X \n'+
+            //     '순차접근 ↓ \n'+
+            //     '임의접근 ↑ \n'+
+            //     '검색 ↑ \n'+
+            //     '수정 ↑ \n'+
+            //     '메모리 ↓ \n'
+            // ],
+            // 'TreeSet' : [
+            //     '',
+            //
+            //     '순서 X \n'+
+            //     '정렬 O \n'+
+            //     '중복 X \n'+
+            //     '순차접근 ↑ \n'+
+            //     '임의접근 ↓ \n'+
+            //     '검색 ↓ \n'+
+            //     '수정 ↓ \n'+
+            //     '메모리 ↑ \n'
+            // ],
+            'HashMap' : [
+                '임의의 위치에 Key와 Value로 저장',
+                'Key는 유일하다',
+                'Key로 데이터에 바로 접근',
+                '순서가 없다. ( 연속된 데이터 X , 노드 X , 트리구조 X )',
+
+                '순서 X \n'+
+                '정렬 X \n'+
+                '중복 X \n'+
+                '순차접근 속도 ↓ \n'+
+                '임의접근 속도 ↑ \n'+
+                '검색 속도 ↑ \n'+
+                '수정 속도 ↑ \n'+
+                '메모리 용량 ↑ \n'+
+                '메모리 효율 ↑ \n' ,
+            ],
+            // 'TreeMap' : [
+            //     '',
+            //
+            //     '순서 X \n'+
+            //     '정렬 O \n'+
+            //     '중복 X \n'+
+            //     '순차접근 ↓ \n'+
+            //     '임의접근 ↑ \n'+
+            //     '검색 ↑ \n'+
+            //     '수정 ↓ \n'+
+            //     '메모리 ↑ \n'
+            // ],
+            // 'LinkedHashMap' : [
+            //     '',
+            //
+            //     '순서 O \n'+
+            //     '정렬 O \n'+
+            //     '중복 X \n'+
+            //     '순차접근 ↑ \n'+
+            //     '임의접근 ↑ \n'+
+            //     '검색 ↑ \n'+
+            //     '수정 ↓ \n'+
+            //     '메모리 ↑ \n'
+            // ],
+            // 'MultiValueMap' : [
+            //     '',
+            //
+            //     '순서 X \n'+
+            //     '정렬 X \n'+
+            //     '중복 O \n'+
+            //     '순차접근 ↓ \n'+
+            //     '임의접근 ↑ \n'+
+            //     '검색 ↑ \n'+
+            //     '수정 ↑ \n'+
+            //     '메모리 ↑ \n'
+            // ],
+            // 'LinkedMultiValueMap' : [
+            //     '',
+            //
+            //     '순서 O \n'+
+            //     '정렬 O \n'+
+            //     '중복 O \n'+
+            //     '순차접근 ↓ \n'+
+            //     '임의접근 ↑ \n'+
+            //     '검색 ↑ \n'+
+            //     '수정 ↓ \n'+
+            //     '메모리 ↑ \n'
+            // ],
+            // 'Properties' : [
+            //     '',
+            //
+            //     '순서 \n'+
+            //     '정렬 \n'+
+            //     '중복 \n'+
+            //     '순차접근 \n'+
+            //     '임의접근 \n'+
+            //     '검색 \n'+
+            //     '수정 \n'+
+            //     '메모리 \n'
+            // ],
+        },
+
+
+        // ArrayList & Map
+        {
+            'ArrayList에 값 추가하기.' : [ 'target.add("ABC");' ],
+            'ArrayList에 값 가져오기.' : [ 'target.get(3);' ],
+            'ArrayList에 값 변경하기.' : [ 'target.set( 3 , "ABC" );' ],
+            'ArrayList의 길이 가져오기.' : [ 'target.size();' ],
+            'ArrayList에 값 삭제하기.' : [ 'target.remove(3);' ],
+            'HashMap에 Key값이 있는지 조회.' : [ 'target.containsKey("name");' ],
+            'HashMap에 Key값들을 Set으로 가져오기.' : [ 'target.keySet();' ],
+            'HashMap에 값 넣기.' : [ 'target.put( "name" , "kurt" );' ],
+            'HashMap에 값 가져오기.' : [ 'target.get("name");' ],
+            'HashMap에 Loop문 실행하기.' : [
+                ' for( String key : keys ){ \n' +
+                '   String value = map.get(key); \n ' +
+                ' } '
+            ],
+        },
+
+
+        // Collection 문법
+        {
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+        },
+
+
+        // Enum
+        {
+            'Enum' : [
+                '열거체',
+                '상수 집합'
+            ],
+            'Enum 메소드 활용하기' : [
+                '상숫값 넣기',
+                '변수 선언하기',
+                '생성자 만들기',
+                'getter 만들기',
+            ],
+            'enum 선언하기' : [
+                'enum Color { \n' +
+                '}'
+            ],
+            '상숫값 넣기' : [ 'RED(1)' ],
+            '변수 선언하기' : [ 'private final int value;' ],
+            '생성자 만들기' : [
+                'Color( int value ){ \n' +
+                '   this.value = value; \n' +
+                '}'
+            ],
+            'getter 만들기' : [
+                'public int getValue(){ \n' +
+                '   return value; \n' +
+                '}'
+            ],
+        },
+
+
+        // Stream
+        {
+            '' : [ '지연평가', '단축평가', '파이프 라인', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+            '' : [ '', '', '', '', '', ],
+        },
+
+
+        // {
+        //     '' : [ '', '', '', '', '', ],
+        //     '' : [ '', '', '', '', '', ],
+        //     '' : [ '', '', '', '', '', ],
+        //     '' : [ '', '', '', '', '', ],
+        //     '' : [ '', '', '', '', '', ],
+        // },
+
+    ];
+    actStep();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Draggable + Sortable</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <style>
+        #lessonTitle , #stepTitle{
+            height: 25px; line-height: 25px; padding-left: 10px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:12px; font-weight: bold;
+        }
+        ul {
+            /*height: 70%;*/
+            list-style-type: none; margin: 0px 100px 10px 0px; padding: 0px 0px 10px 0px;
+            border: 1px solid #000;
+            overflow: auto; /* 스크롤이 필요할 때만 스크롤 표시 */
+        }
+        .division {
+            height: 30px; line-height: 30px; padding-left: 10px; margin-bottom: 10px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:12px; font-weight: bold;
+        }
+        #itemUlBox{
+            width:100%; height:350px; padding: 5px 0px 5px 5px;
+            border: 1px solid #000; overflow: auto; /* 스크롤이 필요할 때만 스크롤 표시 */
+        }
+        .item {
+            margin: 5px 5px 5px 20px; padding: 5px 5px 5px 10px;
+            /*height: 15px; line-height: 15px;*/
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:12px; font-weight: normal; color: #454545;
+            /* 줄바꿈 */white-space: pre;
+        }
+        #next{
+            margin: 5px 0px 5px 0px; padding : 0px 10px 10px 10px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            height: 20px; line-height: 25px;
+            font-size:20px; font-weight: 600;text-align: center; cursor : pointer;
+        }
+        #nextBox {
+            display: flex; /* 플렉스 컨테이너로 설정 */
+        }
+        #nextStep , #beforeStep, #nextLesson , #beforeLesson{
+            flex: 1; height: 25px; line-height: 25px;
+            background-color: #f6f6f6; border: 1px solid #c5c5c5;
+            font-size:13px; font-weight: 600; text-align: center; cursor : pointer;
+        }
+        #space{
+            width: 100%; height: 50px;
+        }
+        .waiting{
+            width:100%; max-height:150px; margin: 5px 0px 5px 0px; padding: 5px 0px 0px 5px;
+        }
+        .waiting .division , .waiting .item{
+            width:250px; overflow: auto; /* 스크롤이 필요할 때만 스크롤 표시 */
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+</head>
+<body>
+
+<script>
+
+
+
+    let currentLessonNum = 0;
+    let currentStepNum = 1;
+
+    const step = {
+        // step0 : function (){
+        //
+        //     let currentLesson = shuffleObject(lesson[currentLessonNum]);
+        //     let divisionStrArr = Object.keys(currentLesson);
+        //
+        //     /** 태그 생성 */
+        //     //초기화
+        //     document.body.innerHTML = "";
+        //     // Lesson , Step Title
+        //     makeTitle();
+        //     // 구분 생성
+        //     divisionStrArr.forEach((divisionStr)=>{
+        //         let $ul = document.createElement("ul");
+        //         let $divition = document.createElement("li");
+        //         $divition.textContent = divisionStr;
+        //         $divition.setAttribute("class","division");
+        //         $ul.appendChild($divition);
+        //         let items = shuffle(currentLesson[divisionStr]);
+        //         items.forEach((item)=>{
+        //             let $item = document.createElement("li");
+        //             $item.textContent = item;
+        //             $item.setAttribute("class","item");
+        //             $ul.appendChild($item);
+        //         });
+        //         document.body.appendChild($ul);
+        //     });
+        //     // 다음 버튼
+        //     makeNextBtn();
+        //
+        // } ,
+        step1 : function (){
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let items = [];
+            divisionStrArr.forEach((divisionStr)=>{
+                items = [ ...items , ...currentLesson[divisionStr] ];
+            });
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            items = shuffle(items);
+            items.forEach((item)=>{
+                let $ul = document.createElement("ul");
+                let $item = document.createElement("li");
+                $item.textContent = item;
+                $item.setAttribute("class","item");
+                $ul.appendChild($item);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 구분 생성
+            let $ul = document.createElement("ul");
+            $ul.setAttribute("class","waiting");
+            let $stepStr = document.getElementById("stepTitle");
+            divisionStrArr = shuffle(divisionStrArr);
+            divisionStrArr.forEach((divisionStr)=>{
+                let $divition = document.createElement("li");
+                $divition.textContent = divisionStr;
+                $divition.setAttribute("class","division");
+                $ul.append($divition);
+            });
+            document.body.insertBefore($ul, $stepStr.nextSibling);
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+            const $uls = document.getElementsByTagName("ul");
+            const uls = Array.from($uls);
+
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",(event)=>{
+                    divisionsReset();
+                    division.classList.add('target');
+                    division.style.backgroundColor = '#A7FFEB';
+                    event.stopPropagation();
+                });
+            });
+
+            uls.forEach((ul)=>{
+                ul.addEventListener("touchstart",()=>{
+                    let $beforeDivision = ul.getElementsByClassName("division")[0];
+                    if( $beforeDivision != undefined && $beforeDivision.parentNode.classList.contains("waiting") ) return;
+                    let $targetDivision = document.getElementsByClassName("target");
+                    if( $targetDivision.length <= 0 ) return;
+                    if( $beforeDivision != undefined ) {
+                        $beforeDivision.parentNode.removeChild($beforeDivision);
+                    }
+                    let $clonedTargetDivision = $targetDivision[0].cloneNode(true);
+                    ul.prepend($clonedTargetDivision);
+                    divisionsReset();
+                });
+            });
+
+            function divisionsReset() {
+                let divisions = Array.from($divisions);
+                divisions.forEach((division)=>{
+                    division.classList.remove('target');
+                    division.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+
+        } ,
+        step2 : function (){
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let items = shuffle(currentLesson[divisionStr]);
+                items.forEach((item)=>{
+                    let $item = document.createElement("li");
+                    $item.textContent = item;
+                    $item.setAttribute("class","item");
+                    $ul.appendChild($item);
+                });
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 구분 생성
+            divisionStrArr = shuffle(divisionStrArr);
+            let tempIndex = 0;
+            let $uls = document.getElementsByTagName("ul");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $divition = document.createElement("li");
+                $divition.textContent = divisionStr;
+                $divition.setAttribute("class","division");
+                let $ul = $uls[tempIndex];
+                $ul.insertBefore($divition, $ul.firstChild);
+                tempIndex++;
+            });
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+            $uls = document.getElementsByTagName("ul");
+            const uls = Array.from($uls);
+
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",(event)=>{
+                    divisionsReset();
+                    division.classList.add('target');
+                    division.style.backgroundColor = '#A7FFEB';
+                    event.stopPropagation();
+                });
+            });
+
+            uls.forEach((ul)=>{
+                ul.addEventListener("touchstart",()=>{
+                    let $beforeDivision = ul.getElementsByClassName("division")[0];
+                    if( $beforeDivision != undefined ) {
+                        let $beforeDivisionUl = document.getElementsByClassName("target")[0].parentNode;
+                        $beforeDivisionUl.prepend($beforeDivision);
+
+                    }
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    ul.prepend($target[0]);
+                    divisionsReset();
+                });
+            });
+
+            function divisionsReset() {
+                divisions.forEach((division)=>{
+                    division.classList.remove('target');
+                    division.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+
+        } ,
+        step3 : function (){
+
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+            let itemStrArr = [];
+            divisionStrArr.forEach((key)=>{
+                itemStrArr.push(...currentLesson[key]);
+            });
+
+
+            /** 태그 생성 */
+            itemStrArr = shuffle(itemStrArr);
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let $ul = document.createElement("ul");
+            $ul.setAttribute("class","waiting");
+            let $li = document.createElement("li");
+            $li.textContent = "항목";
+            $li.setAttribute("class","division");
+            $ul.appendChild($li);
+            itemStrArr.forEach( itemStr => {
+                let $li = document.createElement("li");
+                $li.textContent = itemStr;
+                $li.setAttribute("class","item");
+                $ul.appendChild($li);
+            });
+            document.body.appendChild($ul);
+            // 구분 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+
+
+
+            /** 룰 생성 */
+            const $items = document.getElementsByClassName("item");
+            const items = Array.from($items);
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+
+
+            items.forEach((item)=>{
+                item.addEventListener("touchstart",()=>{
+                    itemsReset();
+                    item.classList.add('target');
+                    item.style.backgroundColor = '#A7FFEB';
+                });
+            });
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",()=>{
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    division.parentNode.appendChild($target[0]);
+                    itemsReset();
+                });
+            });
+
+            function itemsReset() {
+                items.forEach((item)=>{
+                    item.classList.remove('target');
+                    item.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+        } ,
+        step4 : function (){
+
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+            let itemStrArr = [];
+            divisionStrArr.forEach((key)=>{
+                itemStrArr.push(...currentLesson[key]);
+            });
+
+            /** 태그 생성 */
+            itemStrArr = shuffle(itemStrArr);
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 구분 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 항목 생성
+            let tempIndex = 0;
+            itemStrArr.forEach( itemStr => {
+                let $targets = document.getElementsByClassName("division");
+                let $li = document.createElement("li");
+                $li.textContent = itemStr;
+                $li.setAttribute("class","item");
+                $targets[tempIndex].parentNode.appendChild($li);
+                tempIndex = ( tempIndex < divisionStrArr.length-1 )? tempIndex+1 : 0;
+            });
+
+
+
+            /** 룰 생성 */
+            const $items = document.getElementsByClassName("item");
+            const items = Array.from($items);
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+
+            items.forEach((item)=>{
+                item.addEventListener("touchstart",()=>{
+                    itemsReset();
+                    item.classList.add('target');
+                    item.style.backgroundColor = '#A7FFEB';
+                });
+            });
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",()=>{
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    division.parentNode.appendChild($target[0]);
+                    itemsReset();
+                });
+            });
+
+            function itemsReset() {
+                items.forEach((item)=>{
+                    item.classList.remove('target');
+                    item.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+        } ,
+        step5 : function (){
+
+            let currentLesson = shuffleObject(lesson[currentLessonNum]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            document.body.innerHTML = "";
+            // 다음버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 구분 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+
+
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+
+            divisions.forEach((division)=>{
+                let items = [ ...currentLesson[division.textContent] ];
+                division.addEventListener("touchstart",()=>{
+                    while(true){
+                        if(items.length <= 0) break;
+                        let $item = document.createElement("li");
+                        $item.textContent = items.shift();
+                        $item.setAttribute("class","item");
+                        division.parentNode.appendChild($item);
+                    }
+                });
+            });
+
+
+        }
+    };
+
+    function shuffle(arr) {
+        let array = JSON.parse(JSON.stringify(arr));
+        for (let index = array.length - 1; index > 0; index--) {
+            const randomPosition = Math.floor(Math.random() * (index + 1));
+            const temporary = array[index];
+            array[index] = array[randomPosition];
+            array[randomPosition] = temporary;
+        }
+        return array;
+    };
+
+    function shuffleObject(obj){
+        const keys = Object.keys(obj);
+        keys.sort(() => Math.random() - 0.5);
+
+        const shuffledObj = {};
+        keys.forEach(key => {
+            shuffledObj[key] = obj[key];
+        });
+        return shuffledObj;
+    }
+
+    function checkAnswer(){
+
+        let $asnwerDivisions = document.getElementsByClassName("division");
+        let answerLesson = {};
+        Array.from($asnwerDivisions).forEach(($answerDivision)=>{
+            answerLesson[$answerDivision.textContent] = [];
+            if( $answerDivision.parentNode.tagName.toLowerCase() === "ul" ){
+                let childNodes = $answerDivision.parentNode.childNodes;
+                childNodes.forEach((childNode)=>{
+                    if( childNode.classList.contains("item") ) answerLesson[$answerDivision.textContent].push(childNode.textContent);
+                });
+            }
+        });
+
+        let currentLesson = lesson[currentLessonNum];
+        let answerLessonKeys = Object.keys(answerLesson);
+
+
+
+        for (let i = 0; i < answerLessonKeys.length ; i++) {
+            let key = answerLessonKeys[i];
+            if( key === "항목") continue;
+            let answerValues = answerLesson[key];
+            if( answerValues == undefined || answerValues.length <= 0 ){
+                Toast.fire({
+                    icon: 'error',
+                    title: '오답 입니다.'
+                });
+                return;
+            }
+            for (let j = 0; j < answerValues.length; j++) {
+                if( currentLesson[key].indexOf(answerValues[j]) < 0) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: '오답 입니다.'
+                    });
+                    return;
+                };
+            }
+
+        }
+
+        Toast.fire({
+            icon: 'success',
+            title: 'SUCCESS',
+            text: '정답입니다.',
+        }).then(result => {
+            next();
+        });
+    };
+
+    function next(){
+
+        let MAX_STEP = Object.keys(step).length;
+
+        if( currentStepNum >= MAX_STEP && ( currentLessonNum >= lesson.length - 1 ) ){
+            Swal.fire({
+                icon: 'success',
+                title: 'Clear',
+                text: '축하합니다.' +
+                    '모든 문제를 다 맞췄습니다.',
+            }).then(result => {
+                open(location, '_self').close();
+            });
+        } else if( currentStepNum  >= MAX_STEP   ){
+            currentLessonNum ++;
+            currentStepNum = 1;
+            actStep();
+        }else{
+            currentStepNum ++;
+            actStep();
+        };
+    };
+
+    function beforeStep(){
+        if( currentStepNum > 1 ) {
+            currentStepNum--;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '첫번째 Step입니다.',
+            });
+        }
+    }
+
+    function nextStep(){
+        let MAX_STEP = Object.keys(step).length;
+        if( currentStepNum < MAX_STEP ) {
+            currentStepNum++;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '마지막 Step입니다.',
+            });
+        }
+    }
+
+    function beforeLesson() {
+        if( currentLessonNum > 0 ) {
+            currentLessonNum--;
+            currentStepNum = 1;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '첫번째 Lesson입니다.',
+            });
+        }
+    }
+
+    function nextLesson() {
+        if( currentLessonNum < lesson.length-1 ) {
+            currentLessonNum++;
+            currentStepNum = 1;
+            actStep();
+        }else{
+            Toast.fire({
+                icon: 'warning',
+                title: 'warning',
+                text: '마지막 Lesson입니다.',
+            });
+        }
+    }
+
+    function actStep(){
+
+        switch(currentStepNum){
+            case 1 :
+                step.step1();
+                break;
+            case 2 :
+                step.step2();
+                break;
+            case 3 :
+                step.step3();
+                break;
+            case 4 :
+                step.step4();
+                break;
+            case 5 :
+                step.step5();
+                break;
+
+        }
+    };
+
+    function makeTitle(){
+        /* Lesson Title */
+        let $title = document.createElement("div");
+        $title.textContent = "LESSON "+currentLessonNum;
+        $title.setAttribute("id","lessonTitle");
+        document.body.appendChild($title);
+        /* Step Title */
+        let $step = document.createElement("div");
+        $step.textContent = "STEP "+currentStepNum;
+        $step.setAttribute("id","stepTitle");
+        document.body.appendChild($step);
+    }
+
+    function makeNextBtn(){
+
+        /* next box */
+        let $nextBox = document.createElement("div");
+        $nextBox.setAttribute("id","nextBox");
+
+        /* 이전 Lesson  */
+        let $beforeLesson = document.createElement("div");
+        $beforeLesson.setAttribute("id","beforeLesson");
+        $beforeLesson.textContent = "◀ Lesson";
+        $beforeLesson.setAttribute("onclick","beforeLesson();");
+        $nextBox.appendChild($beforeLesson);
+
+        /* 이전 Step */
+        let $beforeStep = document.createElement("div");
+        $beforeStep.setAttribute("id","beforeStep");
+        $beforeStep.textContent = "◀ Step ";
+        $beforeStep.setAttribute("onclick","beforeStep();");
+        $nextBox.appendChild($beforeStep);
+
+        /* 다음 Step */
+        let $nextStep = document.createElement("div");
+        $nextStep.setAttribute("id","nextStep");
+        $nextStep.textContent = "Step ▶";
+        $nextStep.setAttribute("onclick","nextStep();");
+        $nextBox.appendChild($nextStep);
+
+        /* 다음 Lesson  */
+        let $nextLesson = document.createElement("div");
+        $nextLesson.setAttribute("id","nextLesson");
+        $nextLesson.textContent = "Lesson ▶";
+        $nextLesson.setAttribute("onclick","nextLesson();");
+        $nextBox.appendChild($nextLesson);
+
+        document.body.appendChild($nextBox);
+
+        /* 정답 확인 */
+        let $next = document.createElement("div");
+        $next.setAttribute("id","next");
+        $next.textContent = "▶";
+        $next.setAttribute("onclick","checkAnswer();");
+        document.body.appendChild($next);
+
+
+
+
+
+    }
+
+
+    function makeSpace(){
+        /* 공백 */
+        let $space = document.createElement("div");
+        $space.setAttribute("id","space");
+        document.body.appendChild($space);
+    }
+
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'center-center',
+        showConfirmButton: false,
+        timer: 500,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+
+
+
+
+    let lesson = [
+
+        // {
+        //     "" : [ "", "", "" ],
+        //     "" : [ "", "", "" ],
+        //     "" : [ "", "", "" ],
+        //     "" : [ "", "", "" ],
+        // },
+
+        {
+            /* 암호화 */
+            "암호화" : [ "Encryption" ],
+            "복호화" : [ "Decryption" ],
+            "양방향" : [ "복호화 ○" ],
+            "단방향" : [ "복호화 X" ],
+            "대칭키" : [ "암호화키 = 복호화키" ],
+            "비대칭키" : [ "암호화키 ≠ 복호화키" ],
+            "Stream 알고리즘" : [ "비트단위로 암호화" ],
+            "Blcok 알고리즘" : [ "블록단위로 암호화" ],
+            "인수분해 알고리즘" : [ "자연수 N을 구성하는 두 개의 p,q 계산의 어려움을 응용." ],
+            "이산대수 알고리즘" : [ "로그 계산의 어려움을 응용." ],
+            "타원곡선 알고리즘" : [ "타원 곡선 상의 한 점의 배수 관계를 구하기 어려움을 응용." ],
+            "Hash 알고리즘" : [ "원본 데이터를 상징하는 더 짧은 값으로 변환", "고정된 크기의 값으로 변환." ],
+            "RSA" : [ "발명자 3명의 이름 앞글자", "전자서명에 활용" ],
+            "SHA" : [ "Secure Hash Algorithm (안전한 해시 알고리즘)", "NSA (미국 국가 안보국)" ],
+            "Bcrypt" : [ "결과 값 매번 다름", "변환된 코드에 복호화키가 담겨있음", "길이 60 고정" ],
+        },
+
+
+        {
+            /* 암호화 */
+            "암호화" : [ "양방향", "단방향" ],
+            "양방향" : [ "대칭키", "비대칭키" ],
+            "단방향" : [ "Hash 알고리즘" ],
+            "대칭키" : [ "Stream 알고리즘", "Blcok 알고리즘" ],
+            "비대칭키" : [ "인수분해 알고리즘", "이산대수 알고리즘", "타원곡선 알고리즘" ],
+            "인수분해 알고리즘" : [ "RSA" ],
+            "Hash 알고리즘" : [ "SHA", "Bcrypt" ],
+        },
+
+
+        {
+            "" : [ "", "", "" ],
+            "" : [ "", "", "" ],
+            "" : [ "", "", "" ],
+            "" : [ "", "", "" ],
+        },
+
+    ];
+
+    actStep();
+
+</script>
+
+</body>
+</html>
