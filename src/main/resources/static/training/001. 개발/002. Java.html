@@ -275,14 +275,81 @@
         },
 
 
-        'Date' :
-        {
-            '' : [ '', '', '', '', '', ],
-            '' : [ '', '', '', '', '', ],
-            '' : [ '', '', '', '', '', ],
-            '' : [ '', '', '', '', '', ],
-            '' : [ '', '', '', '', '', ],
-        },
+
+        'String Builder' :
+            {
+                'String 특성' : [
+                    '불변 클래스 (immutable)',
+                    '필드 = final byte[] ',
+                ],
+                'StringBuilder & StringBuffer 특성' : [
+                    '가변 클래스 (mutable)',
+                    '필드 = byte [] ',
+                    'StringBuffer → 멀티 쓰레드에 적합 ',
+                ],
+                'String 대신 StringBuilder와 StringBuffer를 사용해야하는 이유' : [
+                    '변경 불가능 → 수정시 새로운 문자열 생성',
+                    '(+)횟수 만큼 중간 문자열 생성',
+                    '새로운 문자열 생성 → 속도 ↓',
+                ],
+                'StringBuilder 객체 생성' : [ 'new StringBuilder("Hello");' ],
+                'StringBuilder에 문자열 추가' : [ 'target.append(" world");' ],
+                'StringBuilder에서 String 반환' : [ 'target.toString();' ],
+            },
+
+
+
+        'LocalDateTime' :
+            {
+                'Date & Calendar 단점' : [
+                    '가변 클래스',
+                    '월 표현의 불일치',
+                    '표준화 부족',
+                    '메서드와 필드가 많아 오버헤드 발생',
+                ],
+                '가변 클래스' : [
+                    'mutable',
+                    'set 메서드로 시간을 변경할 수 있다.',
+                    'setYear() , setMonth() , setDate() ',
+                    '어디서 , 언제 수정했는지 알수 없다.',
+                    '객체 공유시에 문제발생',
+                ],
+                '월 표현의 불일치' : [
+                    'Calendar.JANUARY가 0이다.',
+                    'Calendar.SUNDAY가 1이다.',
+                ],
+                '표준화 부족' : [
+                    '다양한 역법체계 지원 (통일X)',
+                ],
+                '오버헤드' : [
+                    '간접비용',
+                    '목표 달성을 위한 처리 이외의 시간, 메모리 비용',
+                ],
+            },
+
+
+
+        'LocalDateTime' :
+            {
+                'LocalTime' : [ '시간 정보', ],
+                'LocalDate' : [ '날짜 정보', ],
+                'LocalDateTime' : [ '날짜 + 시간 정보', ],
+                'ZonedDateTime ' : [ '특정 지역의 날짜 + 시간 정보', ],
+                '현재 날짜+시간 \n( return LocalDateTime )' : [ 'LocalDateTime.now();' ],
+                'Formatter 생성 \n( return DateTimeFormatter )' : [ 'DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");' ],
+                '포맷팅 \n( return LocalDateTime )' : [ 'localDateTime.format(formatter);' ],
+                '파싱 \n( return String )' : [ 'LocalDateTime.parse("2023-06-12 10:30:00", formatter);' ],
+                'year 가져오기 \n( return int )' : [ 'localDateTime.getYear();' ],
+                'month 가져오기 \n( return Month )' : [ 'localDateTime.getMonth();' ],
+                'day 가져오기 \n( return int )' : [ 'localDateTime.getDayOfMonth();' ],
+                'week 가져오기 \n( return DayOfWeek )' : [ 'localDateTime.getDayOfWeek();' ],
+                'hour 가져오기 \n( return int )' : [ 'localDateTime.getHour();' ],
+                'minute 가져오기 \n( return int )' : [ 'localDateTime.getMinute();' ],
+                'second 가져오기 \n( return int )' : [ 'localDateTime.getSecond();' ],
+                '1일 후 계산' : [ 'localDateTime.plusDays(1);' ],
+                '1시간 전 계산' : [ 'localDateTime.minusHours(1);' ],
+            },
+
 
 
         'Collection 구조' :
@@ -629,7 +696,87 @@
         //     makeNextBtn();
         //
         // } ,
+
         step1 : function (){
+            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
+            let divisionStrArr = Object.keys(currentLesson);
+
+            /** 태그 생성 */
+            //초기화
+            document.body.innerHTML = "";
+            // 다음 버튼
+            makeNextBtn();
+            // Lesson , Step Title
+            makeTitle();
+            // 항목 생성
+            let $itemUlBox = document.createElement("div");
+            $itemUlBox.setAttribute("id","itemUlBox");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $ul = document.createElement("ul");
+                let items = shuffle(currentLesson[divisionStr]);
+                items.forEach((item)=>{
+                    let $item = document.createElement("li");
+                    $item.textContent = item;
+                    $item.setAttribute("class","item");
+                    $ul.appendChild($item);
+                });
+                $itemUlBox.appendChild($ul);
+            });
+            document.body.appendChild($itemUlBox);
+            // 구분 생성
+            divisionStrArr = shuffle(divisionStrArr);
+            let tempIndex = 0;
+            let $uls = document.getElementsByTagName("ul");
+            divisionStrArr.forEach((divisionStr)=>{
+                let $divition = document.createElement("li");
+                $divition.textContent = divisionStr;
+                $divition.setAttribute("class","division");
+                let $ul = $uls[tempIndex];
+                $ul.insertBefore($divition, $ul.firstChild);
+                tempIndex++;
+            });
+
+            /** 룰 생성 */
+            const $divisions = document.getElementsByClassName("division");
+            const divisions = Array.from($divisions);
+            $uls = document.getElementsByTagName("ul");
+            const uls = Array.from($uls);
+
+
+            divisions.forEach((division)=>{
+                division.addEventListener("touchstart",(event)=>{
+                    divisionsReset();
+                    division.classList.add('target');
+                    division.style.backgroundColor = '#A7FFEB';
+                    event.stopPropagation();
+                });
+            });
+
+            uls.forEach((ul)=>{
+                ul.addEventListener("touchstart",()=>{
+                    let $beforeDivision = ul.getElementsByClassName("division")[0];
+                    if( $beforeDivision != undefined ) {
+                        let $beforeDivisionUl = document.getElementsByClassName("target")[0].parentNode;
+                        $beforeDivisionUl.prepend($beforeDivision);
+
+                    }
+                    let $target = document.getElementsByClassName("target");
+                    if( $target.length <= 0 ) return;
+                    ul.prepend($target[0]);
+                    divisionsReset();
+                });
+            });
+
+            function divisionsReset() {
+                divisions.forEach((division)=>{
+                    division.classList.remove('target');
+                    division.style.backgroundColor = '#f6f6f6';
+                });
+            };
+
+
+        } ,
+        step2 : function (){
             let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
 
@@ -711,86 +858,80 @@
 
 
         } ,
-        step2 : function (){
+        step3 : function (){
+
             let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
+            let itemStrArr = [];
+            divisionStrArr.forEach((key)=>{
+                itemStrArr.push(...currentLesson[key]);
+            });
 
             /** 태그 생성 */
+            itemStrArr = shuffle(itemStrArr);
             //초기화
             document.body.innerHTML = "";
             // 다음 버튼
             makeNextBtn();
             // Lesson , Step Title
             makeTitle();
-            // 항목 생성
+            // 구분 생성
             let $itemUlBox = document.createElement("div");
             $itemUlBox.setAttribute("id","itemUlBox");
             divisionStrArr.forEach((divisionStr)=>{
                 let $ul = document.createElement("ul");
-                let items = shuffle(currentLesson[divisionStr]);
-                items.forEach((item)=>{
-                    let $item = document.createElement("li");
-                    $item.textContent = item;
-                    $item.setAttribute("class","item");
-                    $ul.appendChild($item);
-                });
+                let $li = document.createElement("li");
+                $li.textContent = divisionStr;
+                $li.setAttribute("class","division");
+                $ul.appendChild($li);
                 $itemUlBox.appendChild($ul);
             });
             document.body.appendChild($itemUlBox);
-            // 구분 생성
-            divisionStrArr = shuffle(divisionStrArr);
+            // 항목 생성
             let tempIndex = 0;
-            let $uls = document.getElementsByTagName("ul");
-            divisionStrArr.forEach((divisionStr)=>{
-                let $divition = document.createElement("li");
-                $divition.textContent = divisionStr;
-                $divition.setAttribute("class","division");
-                let $ul = $uls[tempIndex];
-                $ul.insertBefore($divition, $ul.firstChild);
-                tempIndex++;
+            itemStrArr.forEach( itemStr => {
+                let $targets = document.getElementsByClassName("division");
+                let $li = document.createElement("li");
+                $li.textContent = itemStr;
+                $li.setAttribute("class","item");
+                $targets[tempIndex].parentNode.appendChild($li);
+                tempIndex = ( tempIndex < divisionStrArr.length-1 )? tempIndex+1 : 0;
             });
+
+
 
             /** 룰 생성 */
+            const $items = document.getElementsByClassName("item");
+            const items = Array.from($items);
             const $divisions = document.getElementsByClassName("division");
             const divisions = Array.from($divisions);
-            $uls = document.getElementsByTagName("ul");
-            const uls = Array.from($uls);
 
+            items.forEach((item)=>{
+                item.addEventListener("touchstart",()=>{
+                    itemsReset();
+                    item.classList.add('target');
+                    item.style.backgroundColor = '#A7FFEB';
+                });
+            });
 
             divisions.forEach((division)=>{
-                division.addEventListener("touchstart",(event)=>{
-                    divisionsReset();
-                    division.classList.add('target');
-                    division.style.backgroundColor = '#A7FFEB';
-                    event.stopPropagation();
-                });
-            });
-
-            uls.forEach((ul)=>{
-                ul.addEventListener("touchstart",()=>{
-                    let $beforeDivision = ul.getElementsByClassName("division")[0];
-                    if( $beforeDivision != undefined ) {
-                        let $beforeDivisionUl = document.getElementsByClassName("target")[0].parentNode;
-                        $beforeDivisionUl.prepend($beforeDivision);
-
-                    }
+                division.addEventListener("touchstart",()=>{
                     let $target = document.getElementsByClassName("target");
                     if( $target.length <= 0 ) return;
-                    ul.prepend($target[0]);
-                    divisionsReset();
+                    division.parentNode.appendChild($target[0]);
+                    itemsReset();
                 });
             });
 
-            function divisionsReset() {
-                divisions.forEach((division)=>{
-                    division.classList.remove('target');
-                    division.style.backgroundColor = '#f6f6f6';
+            function itemsReset() {
+                items.forEach((item)=>{
+                    item.classList.remove('target');
+                    item.style.backgroundColor = '#f6f6f6';
                 });
             };
 
-
         } ,
-        step3 : function (){
+        step4 : function (){
 
             let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
             let divisionStrArr = Object.keys(currentLesson);
@@ -843,79 +984,6 @@
             const $divisions = document.getElementsByClassName("division");
             const divisions = Array.from($divisions);
 
-
-            items.forEach((item)=>{
-                item.addEventListener("touchstart",()=>{
-                    itemsReset();
-                    item.classList.add('target');
-                    item.style.backgroundColor = '#A7FFEB';
-                });
-            });
-
-            divisions.forEach((division)=>{
-                division.addEventListener("touchstart",()=>{
-                    let $target = document.getElementsByClassName("target");
-                    if( $target.length <= 0 ) return;
-                    division.parentNode.appendChild($target[0]);
-                    itemsReset();
-                });
-            });
-
-            function itemsReset() {
-                items.forEach((item)=>{
-                    item.classList.remove('target');
-                    item.style.backgroundColor = '#f6f6f6';
-                });
-            };
-
-        } ,
-        step4 : function (){
-
-            let currentLesson = shuffleObject(lesson[currentLessonkeys[currentLessonNum]]);
-            let divisionStrArr = Object.keys(currentLesson);
-            let itemStrArr = [];
-            divisionStrArr.forEach((key)=>{
-                itemStrArr.push(...currentLesson[key]);
-            });
-
-            /** 태그 생성 */
-            itemStrArr = shuffle(itemStrArr);
-            //초기화
-            document.body.innerHTML = "";
-            // 다음 버튼
-            makeNextBtn();
-            // Lesson , Step Title
-            makeTitle();
-            // 구분 생성
-            let $itemUlBox = document.createElement("div");
-            $itemUlBox.setAttribute("id","itemUlBox");
-            divisionStrArr.forEach((divisionStr)=>{
-                let $ul = document.createElement("ul");
-                let $li = document.createElement("li");
-                $li.textContent = divisionStr;
-                $li.setAttribute("class","division");
-                $ul.appendChild($li);
-                $itemUlBox.appendChild($ul);
-            });
-            document.body.appendChild($itemUlBox);
-            // 항목 생성
-            let tempIndex = 0;
-            itemStrArr.forEach( itemStr => {
-                let $targets = document.getElementsByClassName("division");
-                let $li = document.createElement("li");
-                $li.textContent = itemStr;
-                $li.setAttribute("class","item");
-                $targets[tempIndex].parentNode.appendChild($li);
-                tempIndex = ( tempIndex < divisionStrArr.length-1 )? tempIndex+1 : 0;
-            });
-
-
-
-            /** 룰 생성 */
-            const $items = document.getElementsByClassName("item");
-            const items = Array.from($items);
-            const $divisions = document.getElementsByClassName("division");
-            const divisions = Array.from($divisions);
 
             items.forEach((item)=>{
                 item.addEventListener("touchstart",()=>{
